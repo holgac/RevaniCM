@@ -1,6 +1,22 @@
+doctype html
 html
 	head
 		title
 			= 'RevCMS ' + version 
-	body
-		| Jade Test
+		link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.css')
+	body(ng-app='RevCMS')
+		div.jumbotron
+			div.container
+				h1= 'RevCMS Demo'
+				p
+					| Fetch title and subtitle from db, use it here!
+		span(ng-view)
+
+		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
+		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
+		script(type='text/javascript', src='/vendor/underscore/underscore.js')
+		script(type='text/javascript', src='/vendor/angular/angular.js')
+		script(type='text/javascript', src='/vendor/angular-route/angular-route.min.js')
+		script(type='text/javascript', src='/vendor/angular-bootstrap/ui-bootstrap.min.js')
+		script(type='text/javascript', src='/javascripts/RevCMS.js')
+		script(type='text/javascript', src='/javascripts/controllers.js')

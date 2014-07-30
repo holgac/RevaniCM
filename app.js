@@ -33,17 +33,25 @@ function startServer(config, mongodbConnection) {
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
 	app.use(express.bodyParser());
+	var i18next = require('i18next');
+	i18next.init();
+	app.use(i18next.handle);
+	i18next.registerAppHelper(app);
+	i18next.init({ lng: 'en-US' });
 	app.use(express.methodOverride());
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, 'public')));
 	if ('development' == app.get('env')) {
 		app.use(express.errorHandler());
 	}
+
+
 	http.createServer(app).listen(app.get('port'), function(){
 	  console.log('Express server listening on port ' + app.get('port'));
 	});
 	var cmsRoutes = require('./routes/cms').views(config, mongodbConnection);
 	app.get('/', cmsRoutes.index);
+	app.get('/homepage', cmsRoutes.homepage);
 	var adminRoutes = require('./routes/admin').views(config, mongodbConnection);
 	app.get(config.admin_url, adminRoutes.index);
 }

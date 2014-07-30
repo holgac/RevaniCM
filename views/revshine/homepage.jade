@@ -1,0 +1,8 @@
+div.container
+	div.row
+		div.col-md-4(ng-repeat='article in articles')
+			h2
+				| {{article.title}}
+			p
+				| {{article.contentShort}}
+			a(href='#')= t('readmore')

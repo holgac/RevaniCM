@@ -8,7 +8,18 @@ var cms = function(config, mongodbConnection) {
 		res.render('cms', context);
 	}
 	return {
-		index: self.index
+		index: function(req, res) {
+			context = {
+				version: config.version
+			};
+			res.render('cms', context);
+		},
+		homepage: function(req, res) {
+			context = {
+				version: config.version
+			};
+			res.render('homepage', context);
+		}
 	};
 };
 
