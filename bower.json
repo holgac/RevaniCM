@@ -1,0 +1,14 @@
+{
+  "name": "RevCMS",
+  "description": "An attempt to develop a CMS using angular and node",
+  "version": "0.0.1",
+  "homepage": "https://github.com/revanthedarth/RevCms",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "*",
+    "angular-route": "*",
+    "bootstrap" : "*",
+    "underscore": "*"
+  }
+}

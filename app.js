@@ -7,6 +7,10 @@ var express = require('express'),
 
 var mongoose = require('mongoose');
 
+function loadModels(config) {
+	require('./models/article')(config);
+};
+
 function connectMongoDB(config, callback) {
 	mongoose.connect(config.mongodb_url+"/"+config.mongodb_database);
 	var db = mongoose.connection;
@@ -24,7 +28,7 @@ function connectMongoDB(config, callback) {
 function startServer(config, mongodbConnection) {
 	var app = express();
 	app.set('port', process.env.PORT || 3000);
-	app.set('views', __dirname + '/views');
+	app.set('views', __dirname + '/views/' + config.template);
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
@@ -40,6 +44,8 @@ function startServer(config, mongodbConnection) {
 	});
 	var cmsRoutes = require('./routes/cms').views(config, mongodbConnection);
 	app.get('/', cmsRoutes.index);
+	var adminRoutes = require('./routes/admin').views(config, mongodbConnection);
+	app.get(config.admin_url, adminRoutes.index);
 }
 
 function Main(config) {
@@ -53,6 +59,7 @@ function Main(config) {
 			console.error('Error:', err);
 			process.exit(1);
 		}
+		loadModels(config);
 		var mongodbConnection = results.mongodb;
 		startServer(config, mongodbConnection);
 	});

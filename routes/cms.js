@@ -2,7 +2,10 @@
 var cms = function(config, mongodbConnection) {
 	var self = this;
 	self.index = function(req, res) {
-		res.send('INDEX');
+		context = {
+			version: config.version
+		};
+		res.render('cms', context);
 	}
 	return {
 		index: self.index
@@ -10,5 +13,5 @@ var cms = function(config, mongodbConnection) {
 };
 
 exports.views = function(config, mongodbConnection) {
-	return new cms(mongodbConnection);
+	return new cms(config, mongodbConnection);
 };

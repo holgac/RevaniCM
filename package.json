@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "RevCMS",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,8 @@
     "jade": "*",
     "mongodb" : ">=0.9.6-7",
     "mongoose" : ">=3.6",
-    "async" : "*"
+    "async" : "*",
+    "bower" : "*",
+    "underscore" : "*"
   }
 }
