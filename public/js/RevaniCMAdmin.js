@@ -1,13 +1,13 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var RevCMSAdmin = angular.module('RevCMSAdmin', [
+var RevaniCMAdmin = angular.module('RevaniCMAdmin', [
 	'ngRoute',
 	'ui.bootstrap',
-	'RevCMSAdmin.controllers',
+	'RevaniCMAdmin.controllers',
 ]);
 
-RevCMSAdmin.config(['$routeProvider', function($routeProvider) {
+RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
 				templateUrl: 'adminhome',

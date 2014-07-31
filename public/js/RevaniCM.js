@@ -1,13 +1,13 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var RevCMS = angular.module('RevCMS', [
+var RevaniCM = angular.module('RevaniCM', [
 	'ngRoute',
 	'ui.bootstrap',
-	'RevCMS.controllers',
+	'RevaniCM.controllers',
 ]);
 
-RevCMS.config(['$routeProvider', function($routeProvider) {
+RevaniCM.config(['$routeProvider', function($routeProvider) {
 	$routeProvider
 		.when('/', {
 				templateUrl: 'homepage',

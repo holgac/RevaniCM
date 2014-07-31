@@ -1,8 +1,8 @@
 {
-  "name": "RevCMS",
+  "name": "RevaniCM",
   "description": "An attempt to develop a CMS using angular and node",
   "version": "0.0.1",
-  "homepage": "https://github.com/revanthedarth/RevCms",
+  "homepage": "https://github.com/holgac/RevaniCM",
   "license": "MIT",
   "private": true,
   "dependencies": {

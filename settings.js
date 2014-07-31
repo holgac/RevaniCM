@@ -7,8 +7,8 @@ var settingsManager = function(config, mongodbConnection) {
 	self.settings = null;
 	self.loadDefaults = function(cb) {
 		var settings = new Settings({
-			title: 'RevCMS Demo',
-			subtitle: 'RevCMS: A brand new Content Management System'
+			title: 'RevaniCM Demo',
+			subtitle: 'RevaniCM: A brand new Content Management System'
 		});
 		settings.save(function(err, res) {
 			if(err) {

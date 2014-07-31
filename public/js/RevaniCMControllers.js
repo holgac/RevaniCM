@@ -1,6 +1,6 @@
-var RevCMSControllers = angular.module('RevCMS.controllers', []);
+var RevaniCMControllers = angular.module('RevaniCM.controllers', []);
 
-RevCMSControllers.controller('ArticlesController', ['$scope', '$timeout', '$http', '$rootScope',
+RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout', '$http', '$rootScope',
 	function($scope, $timeout, $http, $rootScope) {
 		$scope.articles = [];
 		$scope.fetchArticles = function() {
