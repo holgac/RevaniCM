@@ -10,6 +10,10 @@ var admin = function(config, mongodbConnection, settings) {
 				res.render('adminlogin', context);
 				return;
 			}
+			if(!req.user.isAdmin) {
+				res.redirect('/');
+				return;
+			}
 			settings.get(function(err, settingsInstance) {
 				if(err) {
 					console.error(err);
