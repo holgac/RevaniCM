@@ -3,5 +3,6 @@ RevCms
 
 An attempt to develop a CMS using angular &amp; node
 
-There is no real control panel or user authentication yet.
-Admin previleges etc. will be added in the future.
+The aims are modularity, easy-templating, and stability.
+
+The project is at it's early release and lacks even the basic CMS features.

@@ -105,6 +105,7 @@ function startServer(config, mongodbConnection, settings) {
 	app.get('/homepage', cmsRoutes.homepage);
 	var adminRoutes = require('./routes/admin').views(config, mongodbConnection, settings);
 	app.get(config.admin_url, adminRoutes.index);
+	app.get(config.admin_url + 'home', adminRoutes.adminhome);
 	app.get(config.admin_url + 'setup', adminRoutes.setup);
 }
 

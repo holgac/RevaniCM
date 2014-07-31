@@ -1,27 +1,47 @@
-
-var admin = function(config, mongodbConnection) {
+var admin = function(config, mongodbConnection, settings) {
 	var self = this;
-	return {
-		index: function(req, res) {
+	self.adminPanelDecorator = function(cb) {
+		return function(req, res) {
 			if(!req.user) {
 				console.log('not logged in!');
 				context = {
 					version: config.version
 				};
 				res.render('adminlogin', context);
-			} else {
-				console.log('logged in!');
-				context = {
-					version: config.version
-				};
-				res.render('adminpanel', context);
+				return;
 			}
-		},
+			settings.get(function(err, settingsInstance) {
+				if(err) {
+					console.error(err);
+					res.send(500, 'Internal Server Error 5001');
+					return;
+				}
+				cb(req, res, settingsInstance);
+			});
+		}
+	};
+	self.index = function(req, res, settings) {
+		context = {
+			version: config.version,
+			settings: settings
+		};
+		res.render('adminpanel', context);
+	};
+	self.adminhome = function(req, res, settings) {
+		context = {
+			version: config.version,
+			settings: settings
+		};
+		res.render('adminhome', context);
+	};
+	return {
+		index: self.adminPanelDecorator(self.index),
+		adminhome: self.adminPanelDecorator(self.adminhome),
 		setup: function(req, res) {
 			var User = mongodbConnection.model('User');
 			User.find({}).limit(1).exec(function(err, doc) {
 				if(doc.length != 0) {
-					res.send(500, 'The server is already running!');
+					res.send(500, 'The server is already set up!');
 					return;
 				}
 				var testUser = new User({
@@ -40,6 +60,6 @@ var admin = function(config, mongodbConnection) {
 	};
 };
 
-exports.views = function(config, mongodbConnection) {
-	return new admin(config, mongodbConnection);
+exports.views = function(config, mongodbConnection, settings) {
+	return new admin(config, mongodbConnection, settings);
 };

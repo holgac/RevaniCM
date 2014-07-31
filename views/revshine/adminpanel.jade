@@ -2,11 +2,12 @@ doctype html
 html
 	head
 		title
-			= 'RevCMS ' + version 
+			= 'RevCMS ' + version + ' Admin Panel'
 		link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.css')
-	body(ng-app='RevCMS')
+		link(rel='stylesheet', href='/css/admin.css')
+	body(ng-app='RevCMSAdmin')
 		div.navbar.navbar-inverse.navbar-fixed-top
-			div.container
+			div.container-fluid
 				div.navbar-header
 					button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
 						span.sr-only= t('togglenavigation')
@@ -32,5 +33,5 @@ html
 		script(type='text/javascript', src='/vendor/angular/angular.js')
 		script(type='text/javascript', src='/vendor/angular-route/angular-route.min.js')
 		script(type='text/javascript', src='/vendor/angular-bootstrap/ui-bootstrap.min.js')
-		script(type='text/javascript', src='/js/RevCMS.js')
-		script(type='text/javascript', src='/js/controllers.js')
+		script(type='text/javascript', src='/js/RevCMSAdmin.js')
+		script(type='text/javascript', src='/js/RevCMSAdminControllers.js')
