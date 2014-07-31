@@ -1,0 +1,13 @@
+doctype html
+html
+	head
+		link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.css')
+		link(rel='stylesheet', href='/css/admin.css')
+		title= t('login.title')
+body
+	div.container
+		form.form-signin(method='post', action='/adminlogin')
+			h2(class='form-signin-heading')= t('admin.signinheading')
+			input(type='text', class='form-control', placeholder=t('username'), required, autofocus, name='username')
+			input(type='password', class='form-control', placeholder=t('password'), required, autofocus, name='password')
+			button(type='submit', class='btn btn-lg btn-primary btn-block')= t('signin')

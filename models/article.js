@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 
 module.exports = function(config) {
 	/**
-	* AudioFile Schema
+	* Article Schema
 	*/
 	var ArticleSchema = new Schema({
 		title: {

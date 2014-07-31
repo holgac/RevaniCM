@@ -1,4 +1,11 @@
 {
 	"togglenavigation":"Toggle Navigation",
-	"readmore":"Read More"
+	"readmore":"Read More",
+	"admin": {
+		"signinheading": "Admin Panel",
+		"articlemanager": "Article Manager",
+		"addarticle": "Add Article",
+		"viewarticles": "View Articles"
+	},
+	"signin": "Sign In"
 }

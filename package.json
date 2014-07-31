@@ -13,6 +13,9 @@
     "async" : "*",
     "bower" : "*",
     "underscore" : "*",
-    "i18next" : "*"
+    "i18next" : "*",
+    "crypto": "*",
+    "passport": "*",
+    "passport-local": "*"
   }
 }
