@@ -107,10 +107,16 @@ function startServer(config, mongodbConnection, settings) {
 	app.get(config.admin_url, adminRoutes.index);
 	app.get(config.admin_url + 'home', adminRoutes.adminhome);
 	app.get(config.admin_url + 'setup', adminRoutes.setup);
+	app.get(config.admin_url + 'editarticle', adminRoutes.admineditarticle);
+	app.get(config.admin_url + 'viewarticles', adminRoutes.adminviewarticles);
+	var articleRoutes = require('./routes/article').views(config, mongodbConnection, settings);
+	app.post('/article', articleRoutes.add);
+	app.get('/article', articleRoutes.get);
+	app.get('/article/:id', articleRoutes.getOne);
 }
 
 function Main(config) {
-	// Connect to MongoDB and prepare mixer rpc in parallel
+	// Perform initialization of required libraries such as mongodb
 	async.parallel({
 		mongodb: function(callback) {
 			connectMongoDB(config, callback);

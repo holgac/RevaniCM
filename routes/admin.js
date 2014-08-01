@@ -38,9 +38,25 @@ var admin = function(config, mongodbConnection, settings) {
 		};
 		res.render('adminhome', context);
 	};
+	self.admineditarticle = function(req, res, settings) {
+		context = {
+			version: config.version,
+			settings: settings
+		};
+		res.render('admineditarticle', context);
+	};
+	self.adminviewarticles = function(req, res, settings) {
+		context = {
+			version: config.version,
+			settings: settings
+		};
+		res.render('adminviewarticles', context);
+	};
 	return {
 		index: self.adminPanelDecorator(self.index),
 		adminhome: self.adminPanelDecorator(self.adminhome),
+		admineditarticle: self.adminPanelDecorator(self.admineditarticle),
+		adminviewarticles: self.adminPanelDecorator(self.adminviewarticles),
 		setup: function(req, res) {
 			var User = mongodbConnection.model('User');
 			User.find({}).limit(1).exec(function(err, doc) {

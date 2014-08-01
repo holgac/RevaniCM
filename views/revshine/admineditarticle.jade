@@ -1,0 +1,10 @@
+div.container-fluid
+	h2.page-header= t('admin.addarticle')
+	div.container-fluid
+		div.row.form-horizontal
+			label.col-sm-1.control-label= t('admin.title')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='article.title')
+		div(text-angular, ng-model='article.content', style='margin-top:1em')
+		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+

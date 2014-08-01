@@ -4,8 +4,14 @@
 	"admin": {
 		"signinheading": "Admin Panel",
 		"articlemanager": "Article Manager",
+		"articles": "Articles",
 		"addarticle": "Add Article",
-		"viewarticles": "View Articles"
+		"viewarticles": "View Articles",
+		"title": "Title",
+		"save": "Save"
 	},
-	"signin": "Sign In"
+	"signin": "Sign In",
+	"date": "Date",
+	"title": "Title",
+	"createdby": "Created By"
 }

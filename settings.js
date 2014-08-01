@@ -8,7 +8,8 @@ var settingsManager = function(config, mongodbConnection) {
 	self.loadDefaults = function(cb) {
 		var settings = new Settings({
 			title: 'RevaniCM Demo',
-			subtitle: 'RevaniCM: A brand new Content Management System'
+			subtitle: 'RevaniCM: A brand new Content Management System',
+			articleShortContentMaxSize: 400
 		});
 		settings.save(function(err, res) {
 			if(err) {
@@ -34,6 +35,9 @@ var settingsManager = function(config, mongodbConnection) {
 				if(self.settings === null) {
 					self.loadDefaults(cb);
 				} else {
+					if(self.settings.articleShortContentMaxSize === undefined) {
+						self.settings.articleShortContentMaxSize = 400;
+					}
 					cb(null, self.settings.toJSON());
 				}
 			}

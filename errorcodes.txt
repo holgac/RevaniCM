@@ -1,0 +1,4 @@
+5000: Database error
+5001: Settings cannot be fetched from database, possibly mongodb/mongoose error
+5002: The requested action requires logging in/additional permissions
+5003: Query errors, type mismatch in parameters etc.

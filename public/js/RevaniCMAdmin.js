@@ -13,6 +13,18 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'adminhome',
 				// controller: 'ArticlesController'
 		})
+		.when('/editarticle/:articleId', {
+				templateUrl: 'admineditarticle',
+				controller: 'EditArticleController'
+		})
+		.when('/addarticle', {
+				templateUrl: 'admineditarticle',
+				controller: 'EditArticleController'
+		})
+		.when('/viewarticles', {
+				templateUrl: 'adminviewarticles',
+				controller: 'ViewArticlesController'
+		})
 		.otherwise({
 				redirectTo: '/'
 		});

@@ -16,6 +16,7 @@
     "i18next" : "*",
     "crypto": "*",
     "passport": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "sanitize-html": "*"
   }
 }

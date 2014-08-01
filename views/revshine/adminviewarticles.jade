@@ -1,0 +1,16 @@
+div.container-fluid
+	h2.page-header= t('admin.articles')
+	div.container-fluid
+		table.table.table-striped.table-bordered.table-hover.table-condensed
+			thead
+				th= t('date')
+				th= t('title')
+				th= t('createdby')
+			tbody
+				tr(ng-repeat='article in articles')
+					td
+						| {{article.created}}
+					td
+						| {{article.title}}
+					td
+						| {{article.creator}}

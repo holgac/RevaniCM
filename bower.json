@@ -11,6 +11,8 @@
     "angular-bootstrap": "*",
     "bootstrap" : "*",
     "jquery" : "*",
-    "underscore": "*"
+    "underscore": "*",
+    "textAngular": "*",
+    "font-awesome": "*"
   }
 }

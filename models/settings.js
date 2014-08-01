@@ -19,6 +19,9 @@ module.exports = function(config) {
 		},
 		subtitle: {
 			type: String
+		},
+		articleShortContentMaxSize: {
+			type: Number
 		}
 	});
 

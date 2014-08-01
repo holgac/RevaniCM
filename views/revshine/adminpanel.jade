@@ -4,6 +4,7 @@ html
 		title
 			= 'RevaniCM ' + version + ' Admin Panel'
 		link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.css')
+		link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
 		link(rel='stylesheet', href='/css/admin.css')
 	body(ng-app='RevaniCMAdmin')
 		div.navbar.navbar-inverse.navbar-fixed-top
@@ -18,20 +19,22 @@ html
 				div.collapse.navbar-collapse
 					ul.nav.navbar-nav
 						li
-							a(href='#', class='dropdown-toggle', data-toggle='dropdown')
+							a(class='dropdown-toggle', data-toggle='dropdown')
 								= t('admin.articlemanager')
 								span.caret
 							ul(class='dropdown-menu navbar-dropdown')
 								li
-									a(href='#')= t('admin.viewarticles')
+									a(href='#viewarticles')= t('admin.viewarticles')
 								li
-									a(href='#')= t('admin.addarticle')
+									a(href='#addarticle')= t('admin.addarticle')
 		span(ng-view)
 		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
 		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
 		script(type='text/javascript', src='/vendor/underscore/underscore.js')
 		script(type='text/javascript', src='/vendor/angular/angular.js')
 		script(type='text/javascript', src='/vendor/angular-route/angular-route.min.js')
+		script(type='text/javascript', src='/vendor/textAngular/dist/textAngular-sanitize.min.js')
+		script(type='text/javascript', src='/vendor/textAngular/dist/textAngular.min.js')
 		script(type='text/javascript', src='/vendor/angular-bootstrap/ui-bootstrap.min.js')
 		script(type='text/javascript', src='/js/RevaniCMAdmin.js')
 		script(type='text/javascript', src='/js/RevaniCMAdminControllers.js')
