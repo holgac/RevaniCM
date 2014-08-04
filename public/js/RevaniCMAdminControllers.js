@@ -4,7 +4,9 @@ RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeou
 	'$http', '$rootScope', '$routeParams', '$location',
 	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
 		if($routeParams.articleId) {
-
+			$http.get('/article/' + $routeParams.articleId).success(function(data) {
+				$scope.article = data;
+			})
 		} else {
 			$scope.article = {
 				title:'Test Title',
@@ -13,6 +15,11 @@ RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeou
 		}
 		$scope.save = function() {
 			if($scope.article._id !== undefined) {
+				$http.post('/article', _.pick($scope.article, 'title', 'content', '_id')).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewarticles');
+					}
+				});
 			} else {
 				$http.post('/article', _.pick($scope.article, 'title', 'content')).success(function(data) {
 					if(data.success === true) {
@@ -20,7 +27,7 @@ RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeou
 					}
 				});
 			}
-		}
+		};
 }]);
 
 RevaniCMAdminControllers.controller('ViewArticlesController', ['$scope', '$timeout',

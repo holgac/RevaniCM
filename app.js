@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 function loadModels(config) {
 	require('./models/article')(config);
 	require('./models/user')(config);
+	require('./models/usergroup')(config);
 	require('./models/settings')(config);
 };
 

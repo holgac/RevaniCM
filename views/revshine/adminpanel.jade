@@ -27,6 +27,15 @@ html
 									a(href='#viewarticles')= t('admin.viewarticles')
 								li
 									a(href='#addarticle')= t('admin.addarticle')
+						li
+							a(class='dropdown-toggle', data-toggle='dropdown')
+								= t('admin.usermanager')
+								span.caret
+							ul(class='dropdown-menu navbar-dropdown')
+								li
+									a(href='#users')= t('admin.users')
+								li
+									a(href='#usergroups')= t('admin.usergroups')
 		span(ng-view)
 		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
 		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')

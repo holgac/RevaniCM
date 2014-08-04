@@ -8,7 +8,10 @@
 		"addarticle": "Add Article",
 		"viewarticles": "View Articles",
 		"title": "Title",
-		"save": "Save"
+		"save": "Save",
+		"usermanager":"User Manager",
+		"users":"Users",
+		"usergroups":"User Groups"
 	},
 	"signin": "Sign In",
 	"date": "Date",
