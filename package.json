@@ -17,6 +17,7 @@
     "crypto": "*",
     "passport": "*",
     "passport-local": "*",
-    "sanitize-html": "*"
+    "sanitize-html": "*",
+    "node-inspector": "*"
   }
 }

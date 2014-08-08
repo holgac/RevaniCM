@@ -20,6 +20,8 @@ module.exports = function(config) {
 		// A bitwise permission list.
 		//   permission types and values are defined in
 		//   root/constants.js in UserGroup.permissions
+		//   
+		//   TODO: change to string or find more elegant way.
 		permissions: {
 			type: Number,
 			default: 0
