@@ -9,35 +9,35 @@ var sanitizeHtml = require('sanitize-html');
 var restizer = function(config, mongodbConnection, settings) {
 	var self = this;
 
-	self.checkAddConstraints = function(Model, reqBody, settings, cb) {
+	self.checkAddConstraints = function(Model, reqBody, user, settings, cb) {
 		if(Model.canAddDocument === undefined) {
 			cb(null, settings);
 		} else {
-			Model.canAddDocument(reqBody, settings, function(err) {
+			Model.canAddDocument(reqBody, user, settings, function(err) {
 				cb(err, settings);
 			});
 		}
 	};
 
-	self.create = function(Model, reqBody, settings, cb) {
+	self.create = function(Model, reqBody, user, settings, cb) {
 		if(Model.createDocument === undefined) {
 			cb(null, new Model(reqBody), settings);
 		} else {
-			Model.createDocument(reqBody, settings, function(err, res) {
+			Model.createDocument(reqBody, user, settings, function(err, res) {
 				cb(err, res, settings);
 			});
 		}
 	};
-	self.sanitize = function(Model, instance, settings, cb) {
+	self.sanitize = function(Model, instance, user, settings, cb) {
 		if(Model.sanitizeDocument === undefined) {
 			cb(null, instance, settings);
 		} else {
-			Model.sanitizeDocument(instance, settings, function(err, res) {
+			Model.sanitizeDocument(instance, user, settings, function(err, res) {
 				cb(err, res, settings);
 			});
 		}
 	};
-	self.save = function(Model, instance, settings, cb) {
+	self.save = function(Model, instance, user, settings, cb) {
 		if(Model.saveDocument === undefined) {
 			instance.save(function(err, doc) {
 				cb(err, doc, settings);
@@ -48,7 +48,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			});
 		}
 	};
-	self.jsonize = function(Model, instances, settings, cb) {
+	self.jsonize = function(Model, instances, user, settings, cb) {
 		if(Model.jsonizeDocuments === undefined) {
 			// That's not necessary but added for integrity
 			// jsonize method always gives jsonized objects, not db docs.
@@ -65,24 +65,25 @@ var restizer = function(config, mongodbConnection, settings) {
 
 	self.add = function(Model) {
 		return function(req, res) {
+			var user = req.user;
 			async.waterfall([
 				function(cb) {
 					settings.get(cb);
 				},
 				function(settings, cb) {
-					self.checkAddConstraints(Model, req.body, settings, cb);
+					self.checkAddConstraints(Model, req.body, user, settings, cb);
 				},
 				function(settings, cb) {
-					self.create(Model, req.body, settings, cb);
+					self.create(Model, req.body, user, settings, cb);
 				},
 				function(instance, settings, cb) {
-					self.sanitize(Model, instance, settings, cb);
+					self.sanitize(Model, instance, user, settings, cb);
 				},
 				function(instance, settings, cb) {
-					self.save(Model, instance, settings, cb);
+					self.save(Model, instance, user, settings, cb);
 				},
 				function(instance, settings, cb) {
-					self.jsonize(Model, [instance], settings, cb);
+					self.jsonize(Model, [instance], user, settings, cb);
 				}
 			], function(err, instances, settings) {
 				if(err) {
@@ -126,7 +127,7 @@ var restizer = function(config, mongodbConnection, settings) {
 					});
 				},
 				function(docs, settings, cb) {
-					self.jsonize(Model, docs, settings, cb);
+					self.jsonize(Model, docs, req.user, settings, cb);
 				}
 			], function(err, docs) {
 				if(err) {
@@ -157,7 +158,7 @@ var restizer = function(config, mongodbConnection, settings) {
 					});
 				},
 				function(doc, settings, cb) {
-					self.jsonize(Model, [doc], settings, cb);
+					self.jsonize(Model, [doc], req.user, settings, cb);
 				}
 			], function(err, docs) {
 				if(err) {

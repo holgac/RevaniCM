@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	ObjectId = Schema.Types.ObjectId,
-	sanitizeHtml = require('sanitize-html');
+	sanitizeHtml = require('sanitize-html'),
+	constants = require('../constants');
 
 module.exports = function(config) {
 	/**
@@ -30,7 +31,7 @@ module.exports = function(config) {
 			type: Date
 		}
 	});
-	ArticleSchema.statics.canAddDocument = function(body, settings, cb) {
+	ArticleSchema.statics.canAddDocument = function(body, user, settings, cb) {
 		if(body.title == undefined || body.title.length == 0) {
 			cb({
 				message: 'title is empty',
@@ -45,10 +46,31 @@ module.exports = function(config) {
 			});
 			return;
 		}
-		cb();
+		if(!user) {
+			cb({
+				message: 'Unauthorized',
+				code:5002
+			});
+			return;
+		}
+		user.permissions(function(err, permissions) {
+			if(err) {
+				cb(err);
+				return;
+			}
+			var permCode = constants.UserGroup.permissions.addContent;
+			if(permissions & permCode) {
+				cb();
+			} else {
+				cb({
+					message: 'Unauthorized',
+					code: 5002
+				});
+			}
+		});
 	};
 
-	ArticleSchema.statics.sanitizeDocument = function(instance, settings, cb) {
+	ArticleSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
 		instance.title = sanitizeHtml(instance.title, {
 			allowedTags: [],
 			allowedAttributes: {},
