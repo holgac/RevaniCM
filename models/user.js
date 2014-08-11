@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var _ = require('underscore');
+var constants = require('../constants');
 
 module.exports = function(config) {
 	/**
@@ -57,6 +58,12 @@ module.exports = function(config) {
 		hash.update(passwd);
 		return(this.password == hash.digest('hex'));
 	};
+	// TODO: Use a redis server or equivalent to 
+	// store permissions of users. These entries
+	// should update when a user is logged in
+	// It's even beter to create a temporary key in
+	// redis server that stores permission of the user
+	// of current session and store that in session
 	UserSchema.methods.permissions = function(cb) {
 		var self = this;
 		var UserGroup = mongoose.model('UserGroup');
@@ -71,6 +78,40 @@ module.exports = function(config) {
 			});
 			cb(null, permission);
 		});
+	};
+	UserSchema.statics.canAddDocument = function(body, user, settings, cb) {
+		if(!user) {
+			cb({
+				message: 'Unauthorized',
+				code:5002
+			});
+			return;
+		}
+		user.permissions(function(err, permissions) {
+			if(err) {
+				cb(err);
+				return;
+			}
+			var permCode = constants.UserGroup.permissions.addUser;
+			if(permissions & permCode) {
+				cb();
+			} else {
+				cb({
+					message: 'Unauthorized',
+					code: 5002
+				});
+			}
+		});
+	};
+	UserSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
+		var fields = ['_id', 'name','username','email','created','active','groups'];
+		if(requestedFields !== null) {
+			fields = _.intersection(fields, requestedFields);
+		}
+		var jsonized = _.map(instances, function(instance) {
+			return _.pick(instance, fields);
+		});
+		cb(null, jsonized);
 	};
 
 	mongoose.model('User', UserSchema, 'users');

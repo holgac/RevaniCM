@@ -112,6 +112,7 @@ function startServer(config, mongodbConnection, settings) {
 	app.get(config.admin_url + 'viewarticles', adminRoutes.adminviewarticles);
 	var Restizer = require('./routes/restizer').restizer(config, mongodbConnection, settings);
 	Restizer.restize(app, 'Article','article');
+	Restizer.restize(app, 'User','user');
 	// var articleRoutes = require('./routes/article').views(config, mongodbConnection, settings);
 	// app.post('/article', articleRoutes.add);
 	// app.get('/article', articleRoutes.get);

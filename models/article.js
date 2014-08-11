@@ -3,11 +3,11 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	ObjectId = Schema.Types.ObjectId,
-	sanitizeHtml = require('sanitize-html'),
-	constants = require('../constants');
+var mongoose = require('mongoose');
+var sanitizeHtml = require('sanitize-html');
+var constants = require('../constants');
+var Schema = mongoose.Schema;
+var ObjectId = Schema.Types.ObjectId;
 
 module.exports = function(config) {
 	/**
@@ -41,7 +41,7 @@ module.exports = function(config) {
 		}
 		if(body.content == undefined || body.content.length == 0) {
 			cb({
-				message: 'title is empty',
+				message: 'content is empty',
 				code: 5004
 			});
 			return;
