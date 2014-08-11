@@ -69,6 +69,13 @@ module.exports = function(config) {
 			}
 		});
 	};
+	ArticleSchema.statics.createDocument = function(body, user, settings, cb) {
+		var Article = mongoose.model('Article');
+		var article = new Article(body);
+		article.creator = user._id;
+		article.created = new Date();
+		cb(null, article);
+	};
 
 	ArticleSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
 		instance.title = sanitizeHtml(instance.title, {
