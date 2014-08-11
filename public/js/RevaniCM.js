@@ -5,7 +5,8 @@ var RevaniCM = angular.module('RevaniCM', [
 	'ngRoute',
 	'ui.bootstrap',
 	'RevaniCM.controllers',
-	'RevaniCM.filters'
+	'RevaniCM.services',
+	'RevaniCM.filters',
 ]);
 
 RevaniCM.config(['$routeProvider', function($routeProvider) {

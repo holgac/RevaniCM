@@ -178,7 +178,13 @@ var restizer = function(config, mongodbConnection, settings) {
 	self.get = function(Model) {
 		return function(req, res) {
 			var query = url.parse(req.url, true).query;
-			var premise = Model.find({});
+			var premise = undefined;
+			if(query.ids) {
+				var ids = query.ids.split(',');
+				premise = Model.find({_id:{$in:ids}});
+			} else {
+				premise = Model.find({});
+			}
 			if(query.skip !== undefined) {
 				if(isNaN(query.skip) || query.skip < 0) {
 					res.send(500, 'Internal Server Error 5003');
