@@ -38,47 +38,25 @@ var admin = function(config, mongodbConnection, settings) {
 			});
 		}
 	};
-	self.index = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('adminpanel', context);
-	};
-	self.adminhome = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('adminhome', context);
-	};
-	self.admineditarticle = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('admineditarticle', context);
-	};
-	self.adminviewarticles = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('adminviewarticles', context);
-	};
-	self.adminviewusers = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('adminviewusers', context);
-	};
+	self.createView = function(viewName) {
+		return function(req, res, settings) {
+			context = {
+				version: config.version,
+				settings: settings
+			};
+			res.render(viewName, context);
+		}
+	}
+	self.createAdminView = function(viewName) {
+		return self.adminPanelDecorator(self.createView(viewName));
+	}
 	return {
-		index: self.adminPanelDecorator(self.index),
-		adminhome: self.adminPanelDecorator(self.adminhome),
-		admineditarticle: self.adminPanelDecorator(self.admineditarticle),
-		adminviewarticles: self.adminPanelDecorator(self.adminviewarticles),
-		adminviewusers: self.adminPanelDecorator(self.adminviewusers),
+		index: self.createAdminView('adminpanel'),
+		home: self.createAdminView('adminhome'),
+		editarticle: self.createAdminView('admineditarticle'),
+		viewarticles: self.createAdminView('adminviewarticles'),
+		viewusers: self.createAdminView('adminviewusers'),
+		edituser: self.createAdminView('adminedituser'),
 		setup: function(req, res) {
 			var User = mongodbConnection.model('User');
 			var UserGroup = mongodbConnection.model('UserGroup');

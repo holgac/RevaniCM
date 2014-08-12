@@ -15,7 +15,7 @@ RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeou
 		}
 		$scope.save = function() {
 			if($scope.article._id !== undefined) {
-				$http.post('/article', _.pick($scope.article, ['title', 'content', '_id'])).success(function(data) {
+				$http.put('/article/' + $scope.article._id, _.pick($scope.article, ['title', 'content'])).success(function(data) {
 					if(data.success === true) {
 						$location.url('/viewarticles');
 					}

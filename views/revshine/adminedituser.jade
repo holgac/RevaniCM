@@ -1,0 +1,13 @@
+div.container-fluid
+	h2.page-header= t('admin.adduser')
+	div.container-fluid
+		div.row
+			div.form-horizontal
+				label.col-md-1.control-label= t('name')
+				div.col-md-2
+					input.form-control(type='number', ng-model='user.name')
+			div.form-horizontal
+				label.col-md-1.control-label= t('username')
+				div.col-md-2
+					input.form-control(type='number', ng-model='user.username')
+

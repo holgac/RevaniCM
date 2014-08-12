@@ -7,4 +7,5 @@ div.container-fluid
 				input.form-control(type='text', ng-model='article.title')
 		div(text-angular, ng-model='article.content', style='margin-top:1em')
 		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+		a.btn.btn-warning.pull-right(href='#viewarticles', style='margin-top:1em; margin-right:1em')= t('goback')
 

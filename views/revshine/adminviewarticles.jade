@@ -13,6 +13,7 @@ div.container-fluid
 					td
 						| {{article.created}}
 					td
-						| {{article.title}}
+						a(href='#editarticle/{{article._id}}')
+							| {{article.title}}
 					td
-						| {{article.creator}}
+						| {{article.creator | cachedDocument:'user':'name'}}

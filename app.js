@@ -1,8 +1,9 @@
-var express = require('express'),
-	http = require('http'),
-	path = require('path'),
-	async = require('async'),
-	config = require('./config');
+var express = require('express');
+var http = require('http');
+var path = require('path');
+var async = require('async');
+var config = require('./config');
+var _ = require('underscore');
 
 
 var mongoose = require('mongoose');
@@ -105,20 +106,17 @@ function startServer(config, mongodbConnection, settings) {
 	app.get('/', cmsRoutes.index);
 	app.get('/homepage', cmsRoutes.homepage);
 	var adminRoutes = require('./routes/admin').views(config, mongodbConnection, settings);
-	app.get(config.admin_url, adminRoutes.index);
-	app.get(config.admin_url + 'home', adminRoutes.adminhome);
-	app.get(config.admin_url + 'setup', adminRoutes.setup);
-	app.get(config.admin_url + 'editarticle', adminRoutes.admineditarticle);
-	app.get(config.admin_url + 'viewarticles', adminRoutes.adminviewarticles);
-	app.get(config.admin_url + 'viewusers', adminRoutes.adminviewusers);
+	_.each(adminRoutes, function(route, routeName) {
+		if(routeName == 'index') {
+			app.get(config.admin_url, adminRoutes.index);
+		} else {
+			app.get(config.admin_url + routeName, route);
+		}
+	});
 	var Restizer = require('./routes/restizer').restizer(config, mongodbConnection, settings);
 	Restizer.restize(app, 'Article','article');
 	Restizer.restize(app, 'User','user');
 	Restizer.restize(app, 'UserGroup','usergroup');
-	// var articleRoutes = require('./routes/article').views(config, mongodbConnection, settings);
-	// app.post('/article', articleRoutes.add);
-	// app.get('/article', articleRoutes.get);
-	// app.get('/article/:id', articleRoutes.getOne);
 }
 
 function Main(config) {
