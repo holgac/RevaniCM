@@ -5,6 +5,8 @@ var RevaniCMAdmin = angular.module('RevaniCMAdmin', [
 	'ngRoute',
 	'ui.bootstrap',
 	'RevaniCMAdmin.controllers',
+	'RevaniCM.filters',
+	'RevaniCM.services',
 ]);
 
 RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
@@ -17,13 +19,21 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'admineditarticle',
 				controller: 'EditArticleController'
 		})
-		.when('/addarticle', {
+		.when('/editarticle', {
 				templateUrl: 'admineditarticle',
 				controller: 'EditArticleController'
 		})
 		.when('/viewarticles', {
 				templateUrl: 'adminviewarticles',
 				controller: 'ViewArticlesController'
+		})
+		.when('/viewusers', {
+				templateUrl: 'adminviewusers',
+				controller: 'ViewUsersController'
+		})
+		.when('/edituser', {
+				templateUrl: 'adminedituser',
+				controller: 'EditUserController'
 		})
 		.otherwise({
 				redirectTo: '/'

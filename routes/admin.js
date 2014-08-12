@@ -66,11 +66,19 @@ var admin = function(config, mongodbConnection, settings) {
 		};
 		res.render('adminviewarticles', context);
 	};
+	self.adminviewusers = function(req, res, settings) {
+		context = {
+			version: config.version,
+			settings: settings
+		};
+		res.render('adminviewusers', context);
+	};
 	return {
 		index: self.adminPanelDecorator(self.index),
 		adminhome: self.adminPanelDecorator(self.adminhome),
 		admineditarticle: self.adminPanelDecorator(self.admineditarticle),
 		adminviewarticles: self.adminPanelDecorator(self.adminviewarticles),
+		adminviewusers: self.adminPanelDecorator(self.adminviewusers),
 		setup: function(req, res) {
 			var User = mongodbConnection.model('User');
 			var UserGroup = mongodbConnection.model('UserGroup');

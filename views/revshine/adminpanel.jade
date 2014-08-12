@@ -26,16 +26,16 @@ html
 								li
 									a(href='#viewarticles')= t('admin.viewarticles')
 								li
-									a(href='#addarticle')= t('admin.addarticle')
+									a(href='#editarticle')= t('admin.addarticle')
 						li
 							a(class='dropdown-toggle', data-toggle='dropdown')
 								= t('admin.usermanager')
 								span.caret
 							ul(class='dropdown-menu navbar-dropdown')
 								li
-									a(href='#users')= t('admin.users')
+									a(href='#viewusers')= t('admin.users')
 								li
-									a(href='#usergroups')= t('admin.usergroups')
+									a(href='#viewusergroups')= t('admin.usergroups')
 		span(ng-view)
 		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
 		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
@@ -47,3 +47,5 @@ html
 		script(type='text/javascript', src='/vendor/angular-bootstrap/ui-bootstrap.min.js')
 		script(type='text/javascript', src='/js/RevaniCMAdmin.js')
 		script(type='text/javascript', src='/js/RevaniCMAdminControllers.js')
+		script(type='text/javascript', src='/js/RevaniCMFilters.js')
+		script(type='text/javascript', src='/js/RevaniCMServices.js')

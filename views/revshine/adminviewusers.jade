@@ -1,0 +1,31 @@
+div.container-fluid
+	h2.page-header= t('admin.articles')
+	div.container-fluid
+		a(href='#editarticle')
+			button.btn.btn-primary.pull-right= t('admin.addarticle')
+		table.table.table-striped.table-bordered.table-hover.table-condensed
+			thead
+				th= t('name')
+				th= t('username')
+				th= t('email')
+				th= t('created')
+				th= t('lastvisit')
+				th= t('active')
+				th= t('groups')
+			tbody
+				tr(ng-repeat='user in users')
+					td
+						| {{user.name}}
+					td
+						| {{user.username}}
+					td
+						| {{user.email}}
+					td
+						| {{user.created | date}}
+					td
+						| {{user.lastVisit | date}}
+					td
+						| {{user.active}}
+					td
+						span(ng-repeat='group in user.groups')
+							| {{group | cachedDocument:'usergroup':'name'}}

@@ -110,9 +110,11 @@ function startServer(config, mongodbConnection, settings) {
 	app.get(config.admin_url + 'setup', adminRoutes.setup);
 	app.get(config.admin_url + 'editarticle', adminRoutes.admineditarticle);
 	app.get(config.admin_url + 'viewarticles', adminRoutes.adminviewarticles);
+	app.get(config.admin_url + 'viewusers', adminRoutes.adminviewusers);
 	var Restizer = require('./routes/restizer').restizer(config, mongodbConnection, settings);
 	Restizer.restize(app, 'Article','article');
 	Restizer.restize(app, 'User','user');
+	Restizer.restize(app, 'UserGroup','usergroup');
 	// var articleRoutes = require('./routes/article').views(config, mongodbConnection, settings);
 	// app.post('/article', articleRoutes.add);
 	// app.get('/article', articleRoutes.get);
