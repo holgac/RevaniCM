@@ -35,6 +35,10 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'adminedituser',
 				controller: 'EditUserController'
 		})
+		.when('/edituser/:userId', {
+				templateUrl: 'adminedituser',
+				controller: 'EditUserController'
+		})
 		.otherwise({
 				redirectTo: '/'
 		});

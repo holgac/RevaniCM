@@ -17,7 +17,8 @@ div.container-fluid
 					td
 						| {{user.name}}
 					td
-						| {{user.username}}
+						a(href='#edituser/{{user._id}}')
+							| {{user.username}}
 					td
 						| {{user.email}}
 					td

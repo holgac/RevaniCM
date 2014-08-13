@@ -114,5 +114,11 @@ module.exports = function(config) {
 		cb(null, jsonized);
 	};
 
+	UserSchema.statics.createDocument = function(body, user, settings, cb) {
+		var User = mongoose.model('User');
+		var user = new User(body);
+		user.created = new Date();
+		cb(null, user);
+	};
 	mongoose.model('User', UserSchema, 'users');
 }

@@ -11,10 +11,19 @@
 		"save": "Save",
 		"usermanager":"User Manager",
 		"users":"Users",
-		"usergroups":"User Groups"
+		"usergroups":"User Groups",
+		"adduser":"Add User",
+		"edituser":"Edit User",
+		"resetpasswordhint":"Fill these fields to set new password"
 	},
 	"signin": "Sign In",
 	"date": "Date",
 	"title": "Title",
-	"createdby": "Created By"
+	"createdby": "Created By",
+	"name":"Name",
+	"username":"Username",
+	"email":"E-Mail",
+	"password":"Password",
+	"confirmpassword":"Confirm Password",
+	"goback":"Go Back"
 }

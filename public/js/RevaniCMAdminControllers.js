@@ -43,30 +43,75 @@ RevaniCMAdminControllers.controller('EditUserController', ['$scope', '$timeout',
 	'$http', '$rootScope', '$routeParams', '$location',
 	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
 		if($routeParams.userId) {
-			$http.get('/article/' + $routeParams.articleId).success(function(data) {
-				$scope.article = data;
-			})
+			$http.get('/user/' + $routeParams.userId).success(function(data) {
+				$scope.user = data.element;
+				$scope.user.password = '';
+				$scope.user.confirmPassword = '';
+			});
 		} else {
-			$scope.article = {
-				title:'Test Title',
-				content:'Test Content'
+			$scope.user = {
+				password:'',
+				confirmPassword:'',
+				email:'',
+				name:'',
+				username:''
 			};
 		}
 		$scope.save = function() {
-			if($scope.article._id !== undefined) {
-				$http.post('/article', _.pick($scope.article, ['title', 'content', '_id'])).success(function(data) {
+			if($scope.user._id !== undefined) {
+				if(!$scope.validateForm()) {
+					return;
+				}
+				var data = _.pick($scope.user, ['name', 'username','email']);
+				if($scope.user.password.length !== 0) {
+					data.password = $scope.user.password;
+				}
+				$http.put('/user/' + $scope.user._id, data).success(function(data) {
 					if(data.success === true) {
-						$location.url('/viewarticles');
+						$location.url('/viewusers');
 					}
 				});
 			} else {
-				$http.post('/article', _.pick($scope.article, ['title', 'content'])).success(function(data) {
+				if(!$scope.validateForm(true)) {
+					return;
+				}
+				$http.post('/user', _.pick($scope.user, ['name', 'username', 'email', 'password'])).success(function(data) {
 					if(data.success === true) {
-						$location.url('/viewarticles');
+						$location.url('/viewusers');
 					}
 				});
 			}
 		};
+		$scope.passwordError = function(strict) {
+			if(!strict && $scope.user === undefined) {
+				return 0;
+			}
+			if($scope.user.confirmPassword.length != 0 && $scope.user.confirmPassword != $scope.user.password) {
+				return 1;
+			}
+			if(strict && $scope.user.confirmPassword != $scope.user.password) {
+				return 1;
+			}
+			return 0;
+		};
+		// TODO: use form validators if possible.
+		$scope.emailError = function(strict) {
+			if(!strict && ($scope.user == undefined || $scope.user.email.length == 0)) {
+				return 0;
+			}
+			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			if(re.test($scope.user.email)) {
+				return 0;
+			}
+			return 1;
+		}
+
+		$scope.validateForm = function(strict) {
+			if($scope.user === undefined) {
+				return false;
+			}
+			return ($scope.user.name.length != 0) && ($scope.user.username.length != 0) && !$scope.emailError(true) && !$scope.passwordError(strict);
+		}
 }]);
 
 RevaniCMAdminControllers.controller('ViewUsersController', ['$scope', '$timeout',

@@ -103,3 +103,7 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+div.line-padding {
+  width:100%;
+  height:3em;
+}

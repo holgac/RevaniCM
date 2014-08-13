@@ -5,9 +5,28 @@ div.container-fluid
 			div.form-horizontal
 				label.col-md-1.control-label= t('name')
 				div.col-md-2
-					input.form-control(type='number', ng-model='user.name')
+					input.form-control(type='text', ng-model='user.name')
 			div.form-horizontal
 				label.col-md-1.control-label= t('username')
 				div.col-md-2
-					input.form-control(type='number', ng-model='user.username')
+					input.form-control(type='text', ng-model='user.username')
+			div.form-horizontal(ng-class='{1:"has-error"}[emailError()]')
+				label.col-md-1.control-label= t('email')
+				div.col-md-2
+					input.form-control(type='text', ng-model='user.email')
+			div.line-padding
+			div.line-padding
+			span(ng-if='user._id !== undefined')
+				= t('admin.resetpasswordhint')
+			div.form-horizontal(ng-class='{1:"has-error"}[passwordError()]')
+				label.col-md-1.control-label= t('password')
+				div.col-md-2
+					input.form-control(type='password', ng-model='user.password')
+			div.line-padding
+			div.form-horizontal(ng-class='{1:"has-error"}[passwordError()]')
+				label.col-md-1.control-label= t('confirmpassword')
+				div.col-md-2
+					input.form-control(type='password', ng-model='user.confirmPassword')
+		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+		a.btn.btn-warning.pull-right(href='#viewarticles', style='margin-top:1em; margin-right:1em')= t('goback')
 
