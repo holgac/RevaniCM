@@ -15,6 +15,10 @@ RevaniCM.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'homepage',
 				controller: 'ArticlesController'
 		})
+		.when('/article/:articleId', {
+				templateUrl: 'homepage',
+				controller: 'ArticleController'
+		})
 		.otherwise({
 				redirectTo: '/'
 		});

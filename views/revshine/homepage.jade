@@ -1,6 +1,15 @@
 div.container
 	div.row
-		div.col-md-12(ng-repeat='article in articles')
+		div.col-md-12(ng-repeat='article in articles', ng-if='articles !== undefined')
+			i.pull-right
+				| {{article.created | date}}
+			h2
+				a(ng-href='#/article/{{article._id}}')
+					| {{article.title}}
+			p(ng-bind-html='article.content')
+			div
+				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
+		div.col-md-12(ng-if='articles === undefined')
 			i.pull-right
 				| {{article.created | date}}
 			h2
