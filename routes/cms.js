@@ -13,23 +13,22 @@ var cms = function(config, mongodbConnection, settings) {
 			});
 		}
 	};
-	self.index = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
+	self.createView = function(viewName) {
+		return function(req, res, settings) {
+			context = {
+				version:config.version,
+				settings:settings,
+				user:req.user
+			};
+			res.render(viewName, context);
 		};
-		res.render('cms', context);
 	};
-	self.homepage = function(req, res, settings) {
-		context = {
-			version: config.version,
-			settings: settings
-		};
-		res.render('homepage', context);
-	};
+	self.createCMSView = function(viewName) {
+		return self.settingsDecorator(self.createView(viewName));
+	}
 	return {
-		index: self.settingsDecorator(self.index),
-		homepage: self.settingsDecorator(self.homepage)
+		index: self.createCMSView('cms'),
+		homepage: self.createCMSView('homepage')
 	};
 };
 

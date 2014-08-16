@@ -9,6 +9,11 @@ div.container
 			p(ng-bind-html='article.content')
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
+				if(settings.comments.enabled)
+					|  {{article.commentCount}} 
+					= t('comments')
+					br
+					| SHARE ON BLA BLA
 		div.col-md-12(ng-if='articles === undefined')
 			i.pull-right
 				| {{article.created | date}}
@@ -17,3 +22,8 @@ div.container
 			p(ng-bind-html='article.content')
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
+			if(settings.comments.enabled)
+				h3
+					= t('comments')
+				if(settings.comments.anonymous || user)
+					| WRITE A COMMENT

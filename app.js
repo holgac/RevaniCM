@@ -103,8 +103,15 @@ function startServer(config, mongodbConnection, settings) {
 	  console.log('Express server listening on port ' + app.get('port'));
 	});
 	var cmsRoutes = require('./routes/cms').views(config, mongodbConnection, settings);
-	app.get('/', cmsRoutes.index);
-	app.get('/homepage', cmsRoutes.homepage);
+
+	_.each(cmsRoutes, function(route, routeName) {
+		if(routeName == 'index') {
+			app.get('/', cmsRoutes.index);
+		} else {
+			app.get('/' + routeName, route);
+		}
+	});
+
 	var adminRoutes = require('./routes/admin').views(config, mongodbConnection, settings);
 	_.each(adminRoutes, function(route, routeName) {
 		if(routeName == 'index') {

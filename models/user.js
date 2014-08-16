@@ -104,7 +104,7 @@ module.exports = function(config) {
 		});
 	};
 	UserSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
-		var fields = ['_id', 'name','username','email','created','active','groups'];
+		var fields = ['_id', 'name', 'username', 'email', 'created', 'active', 'groups'];
 		if(requestedFields !== null) {
 			fields = _.intersection(fields, requestedFields);
 		}

@@ -22,6 +22,16 @@ module.exports = function(config) {
 		},
 		articleShortContentMaxSize: {
 			type: Number
+		},
+		comments: {
+			enabled: {
+				type: Boolean,
+				default: true
+			},
+			anonymous: {
+				type: Boolean,
+				default: true
+			}
 		}
 	});
 

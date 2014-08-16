@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+var _ = require('underscore');
 var mongoose = require('mongoose');
 var sanitizeHtml = require('sanitize-html');
 var constants = require('../constants');
@@ -29,6 +30,20 @@ module.exports = function(config) {
 		},
 		created: {
 			type: Date
+		},
+		/**
+		 * An array that stores the given comments in the following Comment form:
+		 *  _id: ObjectId (unique)
+		 * 	date: Date (comment date)
+		 * 	author: String (author name, if anonymous)
+		 * 	email: String (author email, if anonymous)
+		 * 	title: String (comment title, can be empty)
+		 * 	content: String (comment body)
+		 * 	user: ObjectId (foreign key to User, if logged in)
+		 * @type Comment
+		 */
+		comments: {
+			type: Array
 		}
 	});
 	ArticleSchema.statics.canAddDocument = function(body, user, settings, cb) {
@@ -94,6 +109,34 @@ module.exports = function(config) {
 			instance.contentShort += '...';
 		}
 		cb(null, instance);
+	};
+
+	ArticleSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
+		var fields = ['_id', 'title', 'content', 'contentShort', 'creator', 'created', 'comments', 'commentCount'];
+		if(requestedFields !== null) {
+			fields = _.intersection(fields, requestedFields);
+		}
+		var commentCountRequested = _.contains(fields, 'commentCount');
+		var jsonized = _.map(instances, function(instance) {
+			var obj = _.pick(instance, fields);
+			if(commentCountRequested) {
+				obj.commentCount = 0;
+				if(instance.comments !== undefined) {
+					obj.commentCount = instance.comments.length;
+				}
+			}
+			return obj;
+		});
+		cb(null, jsonized);
+	};
+
+
+	ArticleSchema.statics.instanceMethods = function() {
+		return ['addComment'];
+	};
+
+	ArticleSchema.methods.addComment = function() {
+
 	};
 	mongoose.model('Article', ArticleSchema, 'articles');
 }
