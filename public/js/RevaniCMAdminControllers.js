@@ -122,3 +122,52 @@ RevaniCMAdminControllers.controller('ViewUsersController', ['$scope', '$timeout'
 			$scope.users = data.elements;
 		});
 }]);
+
+
+RevaniCMAdminControllers.controller('EditUserGroupController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		if($routeParams.userGroupId) {
+			$scope.usergroup = {
+				permissions:0
+			};
+			$http.get('/usergroup/' + $routeParams.userGroupId).success(function(data) {
+				$scope.usergroup = data.element;
+			});
+		} else {
+			$scope.usergroup = {
+				name:'Test User Group',
+				permissions:0
+			};
+		}
+		$scope.save = function() {
+			if($scope.usergroup._id !== undefined) {
+				$http.put('/usergroup/' + $scope.usergroup._id, _.pick($scope.usergroup, ['name', 'permissions'])).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewusergroups');
+					}
+				});
+			} else {
+				$http.post('/usergroup', _.pick($scope.usergroup, ['name', 'permissions'])).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewusergroups');
+					}
+				});
+			}
+		};
+		$scope.permissions = [
+			{
+				name:'adminlogin',
+				value:1
+			}
+		]
+}]);
+
+RevaniCMAdminControllers.controller('ViewUserGroupsController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		$scope.users = [];
+		$http.get('/usergroup').success(function(data) {
+			$scope.usergroups = data.elements;
+		});
+}]);

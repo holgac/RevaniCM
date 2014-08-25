@@ -1,0 +1,14 @@
+div.container-fluid
+	h2.page-header= t('admin.articles')
+	div.container-fluid
+		a(href='#editusergroup')
+			//- TODO: check for permissions to display this button
+			button.btn.btn-primary.pull-right= t('admin.addusergroup')
+		table.table.table-striped.table-bordered.table-hover.table-condensed
+			thead
+				th= t('name')
+			tbody
+				tr(ng-repeat='usergroup in usergroups')
+					td
+						a(href='#editusergroup/{{usergroup._id}}')
+							| {{usergroup.name}}

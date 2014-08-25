@@ -1,0 +1,53 @@
+div.container-fluid
+	h2.page-header= t('admin.addusergroup')
+	div.container-fluid
+		div.row
+			div.form-horizontal
+				label.col-md-1.control-label= t('name')
+				div.col-md-2
+					input.form-control(type='text', ng-model='usergroup.name')
+			div.line-padding
+			div.form-horizontal
+				label.col-md-1.control-label
+					h3= t('permissions')
+			table.table.table-striped.table-bordered.table-hover.table-condensed
+				//- thead
+				//- 	th(style='width:2em;')
+				//- 	th= t('name')
+				tbody
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='1', source='usergroup.permissions')
+						td= t('admin.permissions.adminlogin')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='2', source='usergroup.permissions')
+						td= t('admin.permissions.addcontent')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='4', source='usergroup.permissions')
+						td= t('admin.permissions.editcontent')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='8', source='usergroup.permissions')
+						td= t('admin.permissions.deletecontent')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='16', source='usergroup.permissions')
+						td= t('admin.permissions.adduser')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='32', source='usergroup.permissions')
+						td= t('admin.permissions.edituser')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='64', source='usergroup.permissions')
+						td= t('admin.permissions.deleteuser')
+					tr
+						td(style='width:2em;')
+							bitwisecheckbox(value='128', source='usergroup.permissions')
+						td= t('admin.permissions.superadmin')
+
+		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+		a.btn.btn-warning.pull-right(href='#viewarticles', style='margin-top:1em; margin-right:1em')= t('goback')
+

@@ -14,7 +14,19 @@
 		"usergroups":"User Groups",
 		"adduser":"Add User",
 		"edituser":"Edit User",
-		"resetpasswordhint":"Fill these fields to set new password"
+		"addusergroup":"Add User Group",
+		"editusergroup":"Edit User Group",
+		"resetpasswordhint":"Fill these fields to set new password",
+		"permissions": {
+			"adminlogin": "Admin Login",
+			"addcontent": "Add Content",
+			"editcontent": "Edit Content",
+			"deletecontent": "Delete Content",
+			"adduser": "Add User",
+			"edituser": "Edit User",
+			"deleteuser": "Delete User",
+			"superadmin": "Super Admin"
+		}
 	},
 	"signin": "Sign In",
 	"date": "Date",
@@ -27,6 +39,7 @@
 	"confirmpassword":"Confirm Password",
 	"goback":"Go Back",
 	"comments":"Comments",
+	"permissions": "Permissions",
 	"help": {
 		"comments": {
 			"noanonymous": {
