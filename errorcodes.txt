@@ -3,3 +3,4 @@
 5002: The requested action requires logging in/additional permissions
 5003: Query errors, type mismatch in parameters etc.
 5004: The add operation has errors
+5005: Custom request has errors (check additionalMessage if exists)

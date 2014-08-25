@@ -7,3 +7,12 @@
 .header {
 	text-align:center;
 }
+
+div.add-comment {
+  border: 2px solid #ccc;
+}
+
+div.comment-block {
+	border-bottom: 2px solid #ccc;
+	margin-bottom: 1em;
+}

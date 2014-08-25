@@ -23,6 +23,34 @@ RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 				$scope.article = data.element;
 				$scope.article.content = $sce.trustAsHtml($scope.article.content);
 			});
+		};
+		$scope.createDummyComment = function() {
+			$scope.comment = {
+				author:'',
+				email:'',
+				title:'',
+				content:'',
+				notify: false
+			};
+		};
+		$scope.isCommentValid = function() {
+			return ($scope.comment.author.length > 0) && ($scope.comment.content.length > 0);
+		};
+		$scope.isCommentEmailValid = function() {
+			// TODO: emails with single quote is validated with this regex
+			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			if(re.test($scope.comment.email)) {
+				return true;
+			}
+			return false;
+		};
+
+		$scope.publishComment = function() {
+			var url = '/article/' + $routeParams.articleId + '/addComment';
+			var data = _.pick($scope.comment, ['author', 'email','title','content','notify']);
+			$http.put(url, data).success(function(data) {
+			});
 		}
 		$scope.getArticle();
+		$scope.createDummyComment();
 }]);

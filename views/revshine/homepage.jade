@@ -9,11 +9,12 @@ div.container
 			p(ng-bind-html='article.content')
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
+				div.line-padding
+				| SHARE ON BLA BLA
+				div.line-padding
 				if(settings.comments.enabled)
 					|  {{article.commentCount}} 
 					= t('comments')
-					br
-					| SHARE ON BLA BLA
 		div.col-md-12(ng-if='articles === undefined')
 			i.pull-right
 				| {{article.created | date}}
@@ -22,8 +23,57 @@ div.container
 			p(ng-bind-html='article.content')
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
+				br
+				| SHARE ON BLA BLA
 			if(settings.comments.enabled)
 				h3
 					= t('comments')
+				div.comment-block(ng-repeat='comment in article.comments')
+					div.comment-author
+						= t('help.comments.usersaidpre')
+						span(ng-if='comment.author != undefined')
+							| {{comment.author}}
+						span(ng-if='comment.author == undefined')
+							| {{comment.user | cachedDocument:'user':'username'}}
+						= t('help.comments.usersaidpost')
+					div.comment-content
+						| {{comment.content}}
+					div.comment-date
+						| {{comment.date | time}}
 				if(settings.comments.anonymous || user)
-					| WRITE A COMMENT
+					div.add-comment.row
+						if(user)
+							= t('help.comments.commentingas.userpre')
+							= user.username
+							= t('help.comments.commentingas.userpost')
+							br
+						else
+							= t('help.comments.commentingas.anonymous')
+							br
+							label.col-sm-4.control-label= t('help.comments.author')
+							div.col-sm-8
+								input.form-control(ng-model='comment.author')
+							label.col-sm-4.control-label= t('help.comments.email')
+							div.col-sm-8
+								input.form-control(ng-model='comment.email')
+							label.col-sm-4.control-label= t('help.comments.title')
+							div.col-sm-8
+								input.form-control(ng-model='comment.title')
+							label.col-sm-4.control-label= t('help.comments.content')
+							div.col-sm-8
+								textarea.form-control(rows='3', ng-model='comment.content')
+						div.publish-comment.row
+							div.col-sm-2
+								button.btn.btn-default(type='button', ng-disabled='!isCommentValid()', ng-click='publishComment()')
+									= t('help.comments.publish')
+							div.col-sm-8
+							div.col-sm-2
+								div.checkbox
+									label
+										input(type='checkbox', ng-model='comment.notify', ng-disabled='!isCommentEmailValid()')
+										= t('help.comments.notifyme')
+				else
+					= t('help.comments.noanonymous.pre')
+					a(href='#')
+						= t('help.comments.noanonymous.login')
+					= t('help.comments.noanonymous.post')

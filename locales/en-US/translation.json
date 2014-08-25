@@ -25,5 +25,28 @@
 	"email":"E-Mail",
 	"password":"Password",
 	"confirmpassword":"Confirm Password",
-	"goback":"Go Back"
+	"goback":"Go Back",
+	"comments":"Comments",
+	"help": {
+		"comments": {
+			"noanonymous": {
+				"pre": "Anonymous commenting is disabled, please ",
+				"login": "log in",
+				"post": " to comment."
+			},
+			"commentingas": {
+				"userpre": "Commenting as ",
+				"userpost": "",
+				"anonymous": "Commenting as anonymous user"
+			},
+			"author": "Author",
+			"email": "Email (will not be visible, optional)",
+			"title": "Title (optional)",
+			"content": "Comment",
+			"publish": "Publish",
+			"notifyme": "Notify Me",
+			"usersaidpre": "",
+			"usersaidpost": " said..."
+		}
+	}
 }

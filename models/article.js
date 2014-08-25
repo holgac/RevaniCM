@@ -32,14 +32,16 @@ module.exports = function(config) {
 			type: Date
 		},
 		/**
-		 * An array that stores the given comments in the following Comment form:
+		 * A date-sorted array that stores the given comments in the following Comment form:
 		 *  _id: ObjectId (unique)
+		 *  ip: String
 		 * 	date: Date (comment date)
 		 * 	author: String (author name, if anonymous)
-		 * 	email: String (author email, if anonymous)
-		 * 	title: String (comment title, can be empty)
+		 * 	email: String (author email, if anonymous, optional)
+		 * 	title: String (comment title, optional)
 		 * 	content: String (comment body)
 		 * 	user: ObjectId (foreign key to User, if logged in)
+		 * 	notifyme: Boolean (notification request whenever a new comment is added)
 		 * @type Comment
 		 */
 		comments: {
@@ -117,8 +119,16 @@ module.exports = function(config) {
 			fields = _.intersection(fields, requestedFields);
 		}
 		var commentCountRequested = _.contains(fields, 'commentCount');
+		var commentsRequested = _.contains(fields, 'comments');
+		var commentFields = ['_id', 'title', 'user', 'content','date', 'author'];
 		var jsonized = _.map(instances, function(instance) {
 			var obj = _.pick(instance, fields);
+			if(commentsRequested) {
+				// TODO: paginate comments
+				obj.comments = _.map(obj.comments, function(comment) {
+					return _.pick(comment, commentFields);
+				})
+			}
 			if(commentCountRequested) {
 				obj.commentCount = 0;
 				if(instance.comments !== undefined) {
@@ -135,8 +145,59 @@ module.exports = function(config) {
 		return ['addComment'];
 	};
 
-	ArticleSchema.methods.addComment = function() {
-
+	ArticleSchema.methods.addComment = function(request, user, cb) {
+		var self = this;
+		var requestBody = request.body;
+		// TODO: requestBody may be something like this:
+		// {
+		// 	content: {
+		// 		length: 1,
+		// 		injectedData: ...
+		// 	}
+		// }
+		// This is not a malformed request, it's an open injection attempt.
+		// Although this is not a security issue, it should be fixed nonetheless.
+		if(requestBody.content == undefined || requestBody.content.length == 0
+			|| (user == undefined && (requestBody.author == undefined || requestBody.author.length == 0))) {
+			cb({
+				message: 'Malformed Request',
+				additionalMessage: requestBody,
+				code: 5005
+			});
+			return;
+		}
+		if(self.comments === undefined) {
+			self.comments = [];
+		}
+		var comment = {
+			_id: mongoose.Types.ObjectId(),
+			ip: request.connection.remoteAddress,
+			content: requestBody.content,
+			date: new Date(),
+			title: requestBody.title
+		};
+		if(user) {
+			comment.user = user._id;
+		} else {
+			comment.author = requestBody.author;
+			if(requestBody.email) {
+				comment.email = requestBody.email;
+				if(requestBody.notifyme) {
+					comment.notifyme = true;
+				}
+			}
+		}
+		self.comments.push(comment);
+		// TODO: send mail to comments with 'notifyme' field
+		// this can be abused since email address is not validated.
+		// maybe we should enable it only for users
+		self.save(function(err, res) {
+			if(err) {
+				cb(err);
+				return;
+			}
+			cb(null, {success:true});
+		});
 	};
 	mongoose.model('Article', ArticleSchema, 'articles');
 }

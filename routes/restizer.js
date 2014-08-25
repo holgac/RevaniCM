@@ -357,12 +357,62 @@ var restizer = function(config, mongodbConnection, settings) {
 		};
 	};
 
+	self.custom = function(Model) {
+		return function(req, res) {
+			var query = url.parse(req.url, true).query;
+			var premise = Model.findById(req.params.id);
+			var action = req.params.action;
+			async.waterfall([
+				function(cb) {
+					settings.get(cb);
+				},
+				function(settings, cb) {
+					var instanceMethods = Model.instanceMethods();
+					if(_.contains(instanceMethods, action)) {
+						cb(null, settings);
+					} else {
+						cb({
+							message: 'Unknown action',
+							additionalMessage: {
+								action: action,
+								availableActions: instanceMethods
+							},
+							code: 5005
+						});
+					}
+				},
+				function(settings, cb) {
+					premise.exec(function(err, result) {
+						cb(err, result, settings)
+					});
+				},
+				function(doc, settings, cb) {
+					doc[action](req, req.user, function(err, result) {
+						cb(err, result);
+					});
+				}
+			], function(err, result) {
+				if(err) {
+					var code = 5000;
+					if(err.code !== undefined) {
+						code = err.code;
+					}
+					res.send(500, 'Internal Server Error ' + code);
+					console.error(err);
+					return;
+				}
+				res.json(result);
+			});
+		}
+	}
+
 	self.restize = function(app, modelName, urlName) {
 		var Model = mongodbConnection.model(modelName);
 		app.get('/' + urlName, self.get(Model));
 		app.get('/' + urlName + '/:id', self.getOne(Model));
 		app.put('/' + urlName + '/:id', self.edit(Model));
 		app.post('/' + urlName, self.add(Model));
+		app.put('/' + urlName + '/:id/:action', self.custom(Model));
 	};
 };
 
