@@ -9,10 +9,14 @@
 }
 
 div.add-comment {
-  border: 2px solid #ccc;
+  border: 2px solid #ddd;
 }
 
 div.comment-block {
-	border-bottom: 2px solid #ccc;
+	border-bottom: 2px solid #ddd;
 	margin-bottom: 1em;
+}
+
+div.publish-comment {
+	background-color: #ddd;
 }

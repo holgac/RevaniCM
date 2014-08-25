@@ -33,8 +33,8 @@ RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 				notify: false
 			};
 		};
-		$scope.isCommentValid = function() {
-			return ($scope.comment.author.length > 0) && ($scope.comment.content.length > 0);
+		$scope.isCommentValid = function(isLoggedIn) {
+			return (($scope.comment.author.length > 0) || isLoggedIn) && ($scope.comment.content.length > 0);
 		};
 		$scope.isCommentEmailValid = function() {
 			// TODO: emails with single quote is validated with this regex
