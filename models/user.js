@@ -120,5 +120,40 @@ module.exports = function(config) {
 		user.created = new Date();
 		cb(null, user);
 	};
+
+	UserSchema.statics.editDocument = function(body, document, user, settings, cb) {
+		if(!user) {
+			cb({
+				message: 'Unauthorized',
+				code:5002
+			});
+			return;
+		}
+		user.permissions(function(err, permissions) {
+			if(err) {
+				cb(err);
+				return;
+			}
+			var permCode = constants.UserGroup.permissions.editUser;
+			if(permissions & permCode) {
+				var allowedFields = ['name','username','email','active'];
+				var editBody = _.pick(body, allowedFields);
+				_.each(editBody, function(field) {
+					document[field] = editBody[field];
+				});
+				if(body.password !== undefined) {
+					document.setPassword(body.password);
+				}
+				cb(null, document);
+			} else {
+				cb({
+					message: 'Unauthorized',
+					code: 5002
+				});
+			}
+		});
+
+	};
+
 	mongoose.model('User', UserSchema, 'users');
 }
