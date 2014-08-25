@@ -135,7 +135,7 @@ module.exports = function(config) {
 				return;
 			}
 			var permCode = constants.UserGroup.permissions.editUser;
-			if(permissions & permCode) {
+			if(permissions & permCode || user._id == document._id) {
 				var allowedFields = ['name','username','email','active'];
 				var editBody = _.pick(body, allowedFields);
 				_.each(editBody, function(field) {
@@ -152,7 +152,6 @@ module.exports = function(config) {
 				});
 			}
 		});
-
 	};
 
 	mongoose.model('User', UserSchema, 'users');
