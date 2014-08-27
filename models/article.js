@@ -24,6 +24,10 @@ module.exports = function(config) {
 		contentShort: {
 			type: String
 		},
+		category: {
+			// foreign key to Category
+			type: ObjectId
+		},
 		creator: {
 			// foreign key to User
 			type: ObjectId
@@ -148,15 +152,7 @@ module.exports = function(config) {
 	ArticleSchema.methods.addComment = function(request, user, cb) {
 		var self = this;
 		var requestBody = request.body;
-		// TODO: requestBody may be something like this:
-		// {
-		// 	content: {
-		// 		length: 1,
-		// 		injectedData: ...
-		// 	}
-		// }
-		// This is not a malformed request, it's an open injection attempt.
-		// Although this is not a security issue, it should be fixed nonetheless.
+
 		if(requestBody.content == undefined || requestBody.content.length == 0
 			|| (user == undefined && (requestBody.author == undefined || requestBody.author.length == 0))) {
 			cb({
@@ -187,6 +183,7 @@ module.exports = function(config) {
 		var comment = {
 			_id: mongoose.Types.ObjectId(),
 			ip: request.connection.remoteAddress,
+			// TODO: sanitize comment, allow some tags
 			content: requestBody.content,
 			date: new Date(),
 			title: requestBody.title

@@ -4,3 +4,5 @@
 5003: Query errors, type mismatch in parameters etc.
 5004: The add operation has errors
 5005: Custom request has errors (check additionalMessage if exists)
+5006: The add operation has conflict errors (a similar document already exists etc.)
+5007: Requested action attempted to manipulate unexisting documents

@@ -69,4 +69,4 @@ module.exports = function(config) {
 		cb(null, jsonized);
 	};
 	mongoose.model('UserGroup', UserGroupSchema, 'usergroups');
-}
+};

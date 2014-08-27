@@ -155,4 +155,4 @@ module.exports = function(config) {
 	};
 
 	mongoose.model('User', UserSchema, 'users');
-}
+};

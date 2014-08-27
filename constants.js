@@ -9,6 +9,9 @@ module.exports = {
 			editContent: 1<<2,
 			// can delete content, articles, menus etc.
 			deleteContent: 1<<3,
+			// TODO: add/edit/delete permissions are not necessary,
+			// only editUser permission that covers all three
+			// should be enough.
 			// can add users
 			addUser: 1<<4,
 			// can edit users
@@ -18,7 +21,9 @@ module.exports = {
 			// can add/edit/delete user groups
 			// this is being super admin since adding/editing
 			// user groups means altering permissions
-			superAdmin: 1<<7
+			superAdmin: 1<<7,
+			// Can add/edit/delete categories
+			editCategory: 1<<8
 		}
 	}
 }
