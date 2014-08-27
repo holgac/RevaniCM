@@ -275,6 +275,18 @@ var restizer = function(config, mongodbConnection, settings) {
 			} else {
 				premise = Model.find({});
 			}
+			if(query.sort !== undefined) {
+				var sorters = query.sort.split(',');
+				var sortMap = {};
+				_.each(sorters, function(sorter) {
+					if(sorter[0] == '-') {
+						sortMap[sorter.substr(1)] = -1;
+					} else {
+						sortMap[sorter] = 1;
+					}
+					premise.sort(sortMap);
+				});
+			}
 			if(query.skip !== undefined) {
 				if(isNaN(query.skip) || query.skip < 0) {
 					res.send(500, 'Internal Server Error 5003');

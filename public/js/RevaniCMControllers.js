@@ -19,7 +19,7 @@ RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout',
 		$scope.articles = [];
 		$scope.fetchArticles = function() {
 			$rootScope.$broadcast('LoadingStarted');
-			$http.get('/article?fields=created,creator,title,content,_id,commentCount').success(function(data) {
+			$http.get('/article?fields=created,creator,title,content,_id,commentCount&sort=-created').success(function(data) {
 				$scope.articles = data.elements;
 				_.each($scope.articles, function(article) {
 					article.content = $sce.trustAsHtml(article.content);
