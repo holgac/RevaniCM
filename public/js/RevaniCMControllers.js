@@ -1,15 +1,30 @@
 var RevaniCMControllers = angular.module('RevaniCM.controllers', []);
 
+RevaniCMControllers.controller('LoadingController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$sce',
+	function($scope, $timeout, $http, $rootScope, $sce) {
+		$scope.loaderCount = 0;
+		$scope.$on('LoadingStarted', function(event) {
+			$scope.loaderCount++;
+		});
+		$scope.$on('LoadingFinished', function(event) {
+			$scope.loaderCount--;
+		});
+}]);
+
+
 RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout',
 	'$http', '$rootScope', '$sce',
 	function($scope, $timeout, $http, $rootScope, $sce) {
 		$scope.articles = [];
 		$scope.fetchArticles = function() {
+			$rootScope.$broadcast('LoadingStarted');
 			$http.get('/article?fields=created,creator,title,content,_id,commentCount').success(function(data) {
 				$scope.articles = data.elements;
 				_.each($scope.articles, function(article) {
 					article.content = $sce.trustAsHtml(article.content);
 				});
+				$rootScope.$broadcast('LoadingFinished');
 			});
 		};
 		$scope.fetchArticles();
@@ -19,9 +34,11 @@ RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 	function($scope, $timeout, $http, $rootScope, $routeParams, $sce) {
 		$scope.getArticle = function() {
 			$scope.article = {};
+			$rootScope.$broadcast('LoadingStarted');
 			$http.get('/article/' + $routeParams.articleId + '/?fields=created,creator,title,content,comments').success(function(data) {
 				$scope.article = data.element;
 				$scope.article.content = $sce.trustAsHtml($scope.article.content);
+				$rootScope.$broadcast('LoadingFinished');
 			});
 		};
 		$scope.createDummyComment = function() {

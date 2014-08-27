@@ -21,6 +21,10 @@ html
 					| RevaniCM
 				br
 				| No Rights Reserved
+			span(ng-controller='LoadingController')
+				div.loading-splash(ng-if='loaderCount > 0')
+					div.loading-text
+						= t('pleasewait')
 
 		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
 		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
