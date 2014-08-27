@@ -179,9 +179,9 @@ module.exports = function(config) {
 			var logger = require('../logger').logger();
 			logger.log('InjectionAttempt', 'Article.AddComment', '', requestBody, request);
 			cb({
-				code: 5005
+				code: 5005,
 				message: 'Malformed Request',
-				additionalMessage: requestBody;
+				additionalMessage: requestBody
 			});
 			return;
 		}
