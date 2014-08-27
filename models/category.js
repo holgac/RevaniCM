@@ -122,7 +122,7 @@ module.exports = function(config) {
 			var newParentId = request.body.parent;
 			var Category = mongoose.model('Category');
 			var waterfallMethods = [];
-			var editDescendants = function(categoryId, add, manipulateDirectChildren, cb) {
+			var editDescendants = function(categoryId, add, editChildren, cb) {
 				Category.findById(categoryId, function(err, category) {
 					if(err) {
 						cb(err);
@@ -135,12 +135,12 @@ module.exports = function(config) {
 						return;
 					}
 					if(add) {
-						if(manipulateDirectChildren) {
+						if(editChildren) {
 							category.children.push(self._id);
 						}
 						category.descendants.push(self._id);
 					} else {
-						if(manipulateDirectChildren) {
+						if(editChildren) {
 							category.children = _.without(category.children, self._id);
 						}
 						category.descendants = _.without(category.descendants, self._id);

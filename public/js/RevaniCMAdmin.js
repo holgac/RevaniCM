@@ -4,6 +4,7 @@
 var RevaniCMAdmin = angular.module('RevaniCMAdmin', [
 	'ngRoute',
 	'ui.bootstrap',
+	'ui.tree',
 	'RevaniCMAdmin.controllers',
 	'RevaniCMAdmin.directives',
 	'RevaniCM.filters',
@@ -51,6 +52,10 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 		.when('/editusergroup/:userGroupId', {
 				templateUrl: 'admineditusergroup',
 				controller: 'EditUserGroupController'
+		})
+		.when('/viewcategories', {
+				templateUrl: 'adminviewcategories',
+				controller: 'ViewCategoriesController'
 		})
 		.otherwise({
 				redirectTo: '/'

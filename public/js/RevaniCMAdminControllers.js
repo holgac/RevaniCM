@@ -171,3 +171,34 @@ RevaniCMAdminControllers.controller('ViewUserGroupsController', ['$scope', '$tim
 			$scope.usergroups = data.elements;
 		});
 }]);
+
+RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		$scope.categories = [];
+		$http.get('/category').success(function(data) {
+			$scope.categories = data.elements;
+		});
+		$scope.addCategory = function() {
+			if($scope.newCategoryName.length == 0) {
+				return;
+			}
+			$scope.categories.push({
+				name:$scope.newCategoryName,
+				description: '',
+				parent: null,
+				children: [],
+			});
+			$scope.newCategoryName = 'test' + Math.random();
+		};
+		$scope.removeCategory = function(categoryScope) {
+			var children = categoryScope.category.children;
+			categoryScope.category.children = [];
+			categoryScope.remove();
+			$timeout(function() {
+				$scope.categories = $scope.categories.concat(children);
+			});
+		};
+
+		$scope.newCategoryName = 'test' + Math.random();
+}]);
