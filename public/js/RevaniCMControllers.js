@@ -63,9 +63,13 @@ RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 		};
 
 		$scope.publishComment = function() {
+			$rootScope.$broadcast('LoadingStarted');
 			var url = '/article/' + $routeParams.articleId + '/addComment';
 			var data = _.pick($scope.comment, ['author', 'email','title','content','notify']);
 			$http.put(url, data).success(function(data) {
+				$scope.article.comments.push(data.comment);
+				$scope.createDummyComment();
+				$rootScope.$broadcast('LoadingFinished');
 			});
 		}
 		$scope.getArticle();

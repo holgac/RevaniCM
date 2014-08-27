@@ -166,14 +166,9 @@ module.exports = function(config) {
 			});
 			return;
 		}
-		var isStringOrUndefined = function(val) {
-			return (val === undefined || typeof(val) == typeof(''));
-		}
 		var hasErrors = false;
-		_.each([requestBody.content, requestBody.author, requestBody.title, requestBody.email], function(val) {
-			if(!isStringOrUndefined(val)) {
-				hasErrors = true;
-			}
+		hasErrors = _.some([requestBody.content, requestBody.author, requestBody.title, requestBody.email], function(val) {
+			return (val !== undefined && typeof(val) != typeof(''));
 		});
 		if(hasErrors) {
 			var logger = require('../logger').logger();
@@ -216,7 +211,7 @@ module.exports = function(config) {
 				cb(err);
 				return;
 			}
-			cb(null, {success:true});
+			cb(null, {success:true, comment:_.pick(comment, ['_id', 'title', 'user', 'content','date', 'author'])});
 		});
 	};
 	mongoose.model('Article', ArticleSchema, 'articles');
