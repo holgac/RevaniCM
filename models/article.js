@@ -166,6 +166,26 @@ module.exports = function(config) {
 			});
 			return;
 		}
+		var isStringOrUndefined = function(val) {
+			return (val === undefined || typeof(val) == typeof(''));
+		}
+		var hasErrors = false;
+		_.each([requestBody.content, requestBody.author, requestBody.title, requestBody.email], function(val) {
+			if(!isStringOrUndefined(val)) {
+				hasErrors = true;
+			}
+		});
+		if(hasErrors) {
+			var logger = require('../logger').logger();
+			logger.log('InjectionAttempt', 'Article.AddComment', '', requestBody, request);
+			cb({
+				code: 5005
+				message: 'Malformed Request',
+				additionalMessage: requestBody;
+			});
+			return;
+		}
+
 		if(self.comments === undefined) {
 			self.comments = [];
 		}

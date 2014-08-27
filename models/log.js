@@ -15,6 +15,10 @@ module.exports = function(config) {
 	* Log Schema
 	*/
 	var LogSchema = new Schema({
+		// severity of the log in range of [1,5]
+		severity: {
+			type: Number
+		},
 		// base log type
 		baseType: {
 			type: String

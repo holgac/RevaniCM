@@ -14,9 +14,10 @@ var logger = function() {
 	 * @param {String} baseType base log type
 	 * @param {String} type     log type
 	 * @param {String} content  log description
+	 * @param {Object} additionalData  additional data (optional but helpful)
 	 * @param {Object} request  express request (optional but helpful)
 	 */
-	self.addLog = function(baseType, type, content, request) {
+	self.addLog = function(baseType, type, content, additionalData, request) {
 		var rawLog = {
 			baseType: baseType,
 			type: type,
@@ -29,6 +30,9 @@ var logger = function() {
 				rawLog.additionalData.user = request.user._id;
 			}
 			rawLog.additionalData.ip = request.connection.remoteAddress;
+		}
+		if(additionalData) {
+			rawLog.additionalData.additionalData = additionalData;
 		}
 		var log = new Log(rawLog);
 		// logging is not blocking
@@ -43,7 +47,7 @@ var logger = function() {
 		});
 	};
 	return {
-		add: self.addLog
+		log: self.addLog
 	};
 };
 
