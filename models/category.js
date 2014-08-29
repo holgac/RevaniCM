@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+var _ = require('underscore');
 var mongoose = require('mongoose');
 var async = require('async');
 var constants = require('../constants');

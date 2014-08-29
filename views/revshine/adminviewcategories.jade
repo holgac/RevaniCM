@@ -5,7 +5,7 @@ div.container-fluid
 		form.form-inline.pull-right
 			input.form-control(ng-model='newCategoryName')
 	div.container-fluid
-		div(ui-tree)
+		div(ui-tree='treeOptions')
 			ol(ui-tree-nodes='', ng-model='categories', id='category-tree-root')
 				li(ng-repeat='category in categories', ui-tree-node, ng-include='"categoryRenderer"')
 		script(type='text/ng-template', id='categoryRenderer')

@@ -176,21 +176,41 @@ RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$tim
 	'$http', '$rootScope', '$routeParams', '$location',
 	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
 		$scope.categories = [];
-		$http.get('/category').success(function(data) {
-			$scope.categories = data.elements;
+		$scope.dirtyCategories = [];
+
+		$http.get('/category?fields=_id,name,parent').success(function(data) {
+			categoryMap = {};
+			_.each(data.elements, function(cat) {
+				cat.children = [];
+				categoryMap[cat._id] = cat;
+			});
+			_.each(data.elements, function(cat) {
+				if(cat.parent == null) {
+					$scope.categories.push(cat);
+				} else {
+					cat.parent = categoryMap[cat.parent];
+					cat.parent.children.push(cat);
+				}
+			});
 		});
+
 		$scope.addCategory = function() {
 			if($scope.newCategoryName.length == 0) {
 				return;
 			}
-			$scope.categories.push({
-				name:$scope.newCategoryName,
-				description: '',
+			var data = {
+				name: $scope.newCategoryName,
 				parent: null,
-				children: [],
+			};
+			$http.post('/category', data).success(function(data) {
+				var category = _.pick(data.element, ['_id', 'name', 'parent']);
+				category.children = [];
+				categoryMap[category._id] = category;
+				$scope.categories.push(category);
+				$scope.newCategoryName = '';
 			});
-			$scope.newCategoryName = 'test' + Math.random();
 		};
+
 		$scope.removeCategory = function(categoryScope) {
 			var children = categoryScope.category.children;
 			categoryScope.category.children = [];
@@ -199,6 +219,21 @@ RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$tim
 				$scope.categories = $scope.categories.concat(children);
 			});
 		};
+		$scope.treeOptions = {
+			dropped: function(event) {
+				if(event.dest.nodesScope == event.source.nodesScope) {
+					return;
+				}
+				var url = '/category/' + event.source.nodeScope.category._id + '/setParent';
+				var data = {
+					parent: null
+				};
+				if(event.dest.nodesScope.category !== undefined) {
+					data.parent = event.dest.nodesScope.category._id;
+				}
+				$http.put(url, data);
+			},
+		}
 
-		$scope.newCategoryName = 'test' + Math.random();
+		$scope.newCategoryName = '';
 }]);
