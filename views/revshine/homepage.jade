@@ -14,6 +14,8 @@ div.container
 					span.share-button.share-button-twitter
 				a(ng-href='https://www.facebook.com/sharer/sharer.php?u={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
 					span.share-button.share-button-facebook
+				a(ng-href='https://plus.google.com/share?url={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
+					span.share-button.share-button-googleplus
 				div.line-padding
 				if(settings.comments.enabled)
 					|  {{article.commentCount}} 
@@ -31,6 +33,8 @@ div.container
 					span.share-button.share-button-twitter
 				a(ng-href='https://www.facebook.com/sharer/sharer.php?u={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
 					span.share-button.share-button-facebook
+				a(ng-href='https://plus.google.com/share?url={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
+					span.share-button.share-button-googleplus
 			if(settings.comments.enabled)
 				h3
 					= t('comments')

@@ -28,16 +28,17 @@ RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout',
 			});
 		};
 		$scope.fetchArticles();
+		// TODO: calculating base address everytime it's needed is not a good idea,
+		// make it a directive or service or sth like that.
 		if($location.port() != 80) {
 			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/';
-
 		} else {
 			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + '/';
 		}
 }]);
 RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
-	'$http', '$rootScope', '$routeParams', '$sce',
-	function($scope, $timeout, $http, $rootScope, $routeParams, $sce) {
+	'$http', '$rootScope', '$routeParams', '$sce', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $sce, $location) {
 		$scope.getArticle = function() {
 			$scope.article = {};
 			$rootScope.$broadcast('LoadingStarted');
@@ -80,4 +81,10 @@ RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 		}
 		$scope.getArticle();
 		$scope.createDummyComment();
+		if($location.port() != 80) {
+			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/';
+
+		} else {
+			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + '/';
+		}
 }]);
