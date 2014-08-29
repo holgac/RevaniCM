@@ -57,6 +57,10 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'adminviewcategories',
 				controller: 'ViewCategoriesController'
 		})
+		.when('/editcategory/:categoryId', {
+				templateUrl: 'admineditcategory',
+				controller: 'EditCategoryController'
+		})
 		.otherwise({
 				redirectTo: '/'
 		});

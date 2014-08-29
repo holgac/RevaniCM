@@ -237,3 +237,31 @@ RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$tim
 
 		$scope.newCategoryName = '';
 }]);
+
+
+RevaniCMAdminControllers.controller('EditCategoryController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		if($routeParams.categoryId) {
+			$http.get('/category/' + $routeParams.categoryId + '?fields=_id,name,description').success(function(data) {
+				$scope.category = data.element;
+			});
+		} else {
+			// TODO: error or allow creating new category here?
+		}
+		$scope.save = function() {
+			if($scope.category._id !== undefined) {
+				$http.put('/category/' + $scope.category._id, _.pick($scope.category, ['name', 'description'])).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewcategories');
+					}
+				});
+			} else {
+				$http.post('/category', _.pick($scope.category, ['title', 'content'])).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewcategories');
+					}
+				});
+			}
+		};
+}]);
