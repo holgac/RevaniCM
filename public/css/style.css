@@ -35,3 +35,19 @@ div.loading-text {
 	left:50%;
 	top:50%;
 }
+
+.share-button {
+	width:20px;
+	height:20px;
+	background-size: cover;
+	background-image: url('/img/logos.png');
+	background-repeat:no-repeat;
+	display:inline-block;
+	overflow: hidden;
+}
+.share-button-facebook {
+	background-position: 0px 0px !important;
+}
+.share-button-twitter {
+	background-position: -20px 0px !important;
+}

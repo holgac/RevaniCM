@@ -10,7 +10,10 @@ div.container
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
 				div.line-padding
-				| SHARE ON BLA BLA
+				a(ng-href='https://twitter.com/intent/tweet?url={{websiteBaseAddress}}%23/article/{{article._id}}&text={{article.title}}', target='_blank')
+					span.share-button.share-button-twitter
+				a(ng-href='https://www.facebook.com/sharer/sharer.php?u={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
+					span.share-button.share-button-facebook
 				div.line-padding
 				if(settings.comments.enabled)
 					|  {{article.commentCount}} 
@@ -24,7 +27,10 @@ div.container
 			div
 				| {{article.creator | cachedDocument:'user':'username'}} @ {{article.created | time}}
 				br
-				| SHARE ON BLA BLA
+				a(ng-href='https://twitter.com/intent/tweet?url={{websiteBaseAddress}}%23/article/{{article._id}}&text={{article.title}}', target='_blank')
+					span.share-button.share-button-twitter
+				a(ng-href='https://www.facebook.com/sharer/sharer.php?u={{websiteBaseAddress}}%23article/{{article._id}}', target='_blank')
+					span.share-button.share-button-facebook
 			if(settings.comments.enabled)
 				h3
 					= t('comments')

@@ -233,7 +233,7 @@ RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$tim
 				}
 				$http.put(url, data);
 			},
-		}
+		};
 
 		$scope.newCategoryName = '';
 }]);

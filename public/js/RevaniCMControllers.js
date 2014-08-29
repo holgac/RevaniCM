@@ -14,8 +14,8 @@ RevaniCMControllers.controller('LoadingController', ['$scope', '$timeout',
 
 
 RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout',
-	'$http', '$rootScope', '$sce',
-	function($scope, $timeout, $http, $rootScope, $sce) {
+	'$http', '$rootScope', '$sce', '$location',
+	function($scope, $timeout, $http, $rootScope, $sce, $location) {
 		$scope.articles = [];
 		$scope.fetchArticles = function() {
 			$rootScope.$broadcast('LoadingStarted');
@@ -28,6 +28,12 @@ RevaniCMControllers.controller('ArticlesController', ['$scope', '$timeout',
 			});
 		};
 		$scope.fetchArticles();
+		if($location.port() != 80) {
+			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/';
+
+		} else {
+			$scope.websiteBaseAddress = $location.protocol() + '://' + $location.host() + '/';
+		}
 }]);
 RevaniCMControllers.controller('ArticleController', ['$scope', '$timeout',
 	'$http', '$rootScope', '$routeParams', '$sce',
