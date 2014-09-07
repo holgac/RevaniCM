@@ -26,7 +26,8 @@
 			"edituser": "Edit User",
 			"deleteuser": "Delete User",
 			"superadmin": "Super Admin"
-		}
+		},
+		"categories":"Categories"
 	},
 	"signin": "Sign In",
 	"date": "Date",

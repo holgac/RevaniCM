@@ -26,7 +26,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   settings settings document got from settings getter
 	 * @param  {Function} cb       callback to be called after checking for constraints.
 	 *                             should be called as cb(error, settings)
-	 * @return {null}            null
+	 * @return {undefined}            undefined
 	 */
 	self.checkAddConstraints = function(Model, reqBody, user, settings, cb) {
 		if(Model.canAddDocument === undefined) {
@@ -63,6 +63,48 @@ var restizer = function(config, mongodbConnection, settings) {
 	};
 
 	/**
+	 * Checks deleting constraints, whether the user
+	 * can delete a document in the given collection,
+	 * and whether the user can delete the specified document
+	 * @param  {Object}   Model    mongoose model
+	 * @param  {String}   docId    id of the document to be deleted
+	 * @param  {Object}   user     User document or null if not logged in
+	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Function} cb       callback to be called after checking for constraints.
+	 *                             should be called as cb(error, settings)
+	 * @return {undefined}            undefined
+	 */
+	self.checkDeleteConstraints = function(Model, docId, user, settings, cb) {
+		if(Model.canDeleteDocument === undefined) {
+			cb(null, settings);
+		} else {
+			Model.canDeleteDocument(docId, user, settings, function(err) {
+				cb(err, settings);
+			});
+		}
+	};
+
+	/**
+	 * Creates a document from the given object
+	 * @param  {Object}   Model    mongoose model
+	 * @param  {Object}   reqBody  request body, the body to create object from
+	 * @param  {Object}   user     User document or null if not logged in
+	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Function} cb       callback to be called after creating the document
+	 *                             should be called as cb(error, document, settings)
+	 * @return {undefined}            undefined
+	 */
+	self.createDocument = function(Model, reqBody, user, settings, cb) {
+		if(Model.createDocument === undefined) {
+			cb(null, new Model(reqBody), settings);
+		} else {
+			Model.createDocument(reqBody, user, settings, function(err, res) {
+				cb(err, res, settings);
+			});
+		}
+	};
+
+	/**
 	 * Edits the document using the given body
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {Object}   document document to be updated
@@ -86,25 +128,28 @@ var restizer = function(config, mongodbConnection, settings) {
 			});
 		}
 	};
+
 	/**
-	 * Creates a document from the given object
+	 * Deletes the document with the given id.
 	 * @param  {Object}   Model    mongoose model
-	 * @param  {Object}   reqBody  request body, the body to create object from
+	 * @param  {String}   docId    document id
 	 * @param  {Object}   user     User document or null if not logged in
 	 * @param  {Object}   settings settings document got from settings getter
-	 * @param  {Function} cb       callback to be called after creating the document
-	 *                             should be called as cb(error, document, settings)
+	 * @param  {Function} cb       callback to be called after deleting the document
+	 *                             should be called as cb(error)
 	 * @return {undefined}            undefined
 	 */
-	self.createDocument = function(Model, reqBody, user, settings, cb) {
-		if(Model.createDocument === undefined) {
-			cb(null, new Model(reqBody), settings);
+	self.deleteDocument = function(Model, docId, user, settings, cb) {
+		if(Model.deleteDocument === undefined) {
+			Model.remove({_id:docId}, function(err) {
+				cb(err);
+			});
 		} else {
-			Model.createDocument(reqBody, user, settings, function(err, res) {
-				cb(err, res, settings);
+			Model.deleteDocument(docId, user, settings, function(err) {
+				cb(err);
 			});
 		}
-	};
+	}
 
 	/**
 	 * Sanitizes the given document or object
@@ -369,6 +414,36 @@ var restizer = function(config, mongodbConnection, settings) {
 		};
 	};
 
+	self.delete = function(Model) {
+		return function(req, res) {
+			var docId = req.params.id;
+			async.waterfall([
+				function(cb) {
+					settings.get(cb);
+				},
+				function(settings, cb) {
+					self.checkDeleteConstraints(Model, docId, req.user, settings, cb);
+				},
+				function(settings, cb) {
+					self.deleteDocument(Model, docId, req.user, settings, cb);
+				}
+			], function(err) {
+				if(err) {
+					// TODO: log errors, especially unauthorized errors.
+					// these can be simple hack attempts.
+					var code = 5000;
+					if(err.code !== undefined) {
+						code = err.code;
+					}
+					res.send(500, 'Internal Server Error ' + code);
+					console.error(err);
+					return;
+				}
+				res.json({success:true});
+			});
+		}
+	}
+
 	self.custom = function(Model) {
 		return function(req, res) {
 			var query = url.parse(req.url, true).query;
@@ -416,7 +491,7 @@ var restizer = function(config, mongodbConnection, settings) {
 				res.json(result);
 			});
 		}
-	}
+	};
 
 	self.restize = function(app, modelName, urlName) {
 		var Model = mongodbConnection.model(modelName);
@@ -424,6 +499,7 @@ var restizer = function(config, mongodbConnection, settings) {
 		app.get('/' + urlName + '/:id', self.getOne(Model));
 		app.put('/' + urlName + '/:id', self.edit(Model));
 		app.post('/' + urlName, self.add(Model));
+		app.delete('/' + urlName + '/:id', self.delete(Model));
 		app.put('/' + urlName + '/:id/:action', self.custom(Model));
 	};
 };

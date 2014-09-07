@@ -212,11 +212,13 @@ RevaniCMAdminControllers.controller('ViewCategoriesController', ['$scope', '$tim
 		};
 
 		$scope.removeCategory = function(categoryScope) {
-			var children = categoryScope.category.children;
-			categoryScope.category.children = [];
-			categoryScope.remove();
-			$timeout(function() {
-				$scope.categories = $scope.categories.concat(children);
+			$http.delete('/category/' + categoryScope.category._id).success(function(data) {
+				var children = categoryScope.category.children;
+				categoryScope.category.children = [];
+				categoryScope.remove();
+				$timeout(function() {
+					$scope.categories = $scope.categories.concat(children);
+				});
 			});
 		};
 		$scope.treeOptions = {
