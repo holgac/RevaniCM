@@ -14,7 +14,11 @@ div.container-fluid
 					td
 						| {{article.created}}
 					td
-						a(href='#editarticle/{{article._id}}')
+						a(ng-href='#editarticle/{{article._id}}')
 							| {{article.title}}
 					td
 						| {{article.creator | cachedDocument:'user':'name'}}
+						a.btn.btn-danger.btn-xs.pull-right(ng-click='remove(article)')
+							span.glyphicon.glyphicon-remove
+						a.btn.btn-success.btn-xs.pull-right(ng-href='#editarticle/{{article._id}}')
+							span.glyphicon.glyphicon-pencil

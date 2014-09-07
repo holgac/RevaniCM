@@ -37,6 +37,11 @@ RevaniCMAdminControllers.controller('ViewArticlesController', ['$scope', '$timeo
 		$http.get('/article').success(function(data) {
 			$scope.articles = data.elements;
 		});
+		$scope.remove = function(article) {
+			$http.delete('/article/' + article._id).success(function(data) {
+				$scope.articles = _.without($scope.articles, article);
+			});
+		}
 }]);
 
 RevaniCMAdminControllers.controller('EditUserController', ['$scope', '$timeout',
