@@ -140,11 +140,24 @@ module.exports = function(config) {
 							category.children.push(self._id);
 						}
 						category.descendants.push(self._id);
+						category.descendants = category.descendants.concat(self.descendants);
 					} else {
 						if(editChildren) {
-							category.children = _.without(category.children, self._id);
+							category.children = _.filter(category.children, function(child) {
+								return !child.equals(self._id);
+							});
 						}
-						category.descendants = _.without(category.descendants, self._id);
+						category.descendants = _.filter(category.descendants, function(descendant) {
+							if(descendant.equals(self._id)) {
+								return false;
+							}
+							if(_.some(self.descendants, function(selfDesc) {
+								return selfDesc.equals(descendant);
+							})) {
+								return false;
+							}
+							return true;
+						});
 					}
 					category.save(function(err, res) {
 						if(err) {
@@ -162,14 +175,14 @@ module.exports = function(config) {
 					});
 				});
 			}
-			if(newParentId != null) {
-				waterfallMethods.push(function(cb) {
-					editDescendants(newParentId, true, true, cb);
-				});
-			}
 			if(oldParentId != null) {
 				waterfallMethods.push(function(cb) {
 					editDescendants(oldParentId, false, true, cb);
+				});
+			}
+			if(newParentId != null) {
+				waterfallMethods.push(function(cb) {
+					editDescendants(newParentId, true, true, cb);
 				});
 			}
 			waterfallMethods.push(function(cb) {
