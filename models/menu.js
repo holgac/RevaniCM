@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-var crypto = require('crypto');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
@@ -12,29 +11,24 @@ var constants = require('../constants');
 
 module.exports = function(config) {
 	/**
-	* UserGroup Schema
+	* Menu Schema
 	*/
-	var UserGroupSchema = new Schema({
-		// Name of the user group, unique
+	var MenuSchema = new Schema({
+		// Name of the menu, unique.
 		name: {
 			type: String
 		},
-		// A bitwise permission list.
-		//   permission types and values are defined in
-		//   root/constants.js in UserGroup.permissions
-		//   
-		//   TODO: change to string or find more elegant way.
-		permissions: {
-			type: Number,
-			default: 0
-		},
-		parent: {
-			type: ObjectId,
-			default: null
+		// array of sub menus
+		// 	SubMenu structure:
+		// 		name: submenu name (title, as shown to user)
+		// 		type: submenu type. Defined in constants.Menu.types
+		// 		data: additional data depending on submenu type
+		subMenus: {
+			type: Array
 		}
 	});
 
-	UserGroupSchema.statics.canAddDocument = function(body, user, settings, cb) {
+	MenuSchema.statics.canAddDocument = function(body, user, settings, cb) {
 		if(!user) {
 			cb({
 				message: 'Unauthorized',
@@ -47,7 +41,7 @@ module.exports = function(config) {
 				cb(err);
 				return;
 			}
-			var permCode = constants.UserGroup.permissions.superAdmin;
+			var permCode = constants.UserGroup.permissions.editMenu;
 			if(permissions & permCode) {
 				// TODO: check for name conflicts
 				cb();
@@ -59,8 +53,8 @@ module.exports = function(config) {
 			}
 		});
 	};
-	UserGroupSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
-		var fields = ['_id', 'name','parent', 'permissions'];
+	MenuSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
+		var fields = ['_id', 'name','subMenus'];
 		if(requestedFields !== null) {
 			fields = _.intersection(fields, requestedFields);
 		}
@@ -69,5 +63,5 @@ module.exports = function(config) {
 		});
 		cb(null, jsonized);
 	};
-	mongoose.model('UserGroup', UserGroupSchema, 'usergroups');
+	mongoose.model('Menu', MenuSchema, 'menus');
 };

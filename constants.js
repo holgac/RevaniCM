@@ -23,7 +23,20 @@ module.exports = {
 			// user groups means altering permissions
 			superAdmin: 1<<7,
 			// Can add/edit/delete categories
-			editCategory: 1<<8
+			editCategory: 1<<8,
+			// Can add/edit/delete menus
+			editMenu: 1<<9
+		}
+	},
+	Menu: {
+		types: {
+			// menu displays a static, single article
+			// data.article is Article _id.
+			singleArticle: 1,
+			// menu displays a page similar to homepage but
+			// the articles are of the given category or its descendants only.
+			// data.category is Category _id.
+			category: 2
 		}
 	}
 }

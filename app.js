@@ -13,6 +13,7 @@ function loadModels(config) {
 	require('./models/user')(config);
 	require('./models/usergroup')(config);
 	require('./models/category')(config);
+	require('./models/menu')(config);
 	require('./models/settings')(config);
 };
 
@@ -126,6 +127,7 @@ function startServer(config, mongodbConnection, settings) {
 	Restizer.restize(app, 'User','user');
 	Restizer.restize(app, 'UserGroup','usergroup');
 	Restizer.restize(app, 'Category','category');
+	Restizer.restize(app, 'Menu','menu');
 }
 
 function Main(config) {
