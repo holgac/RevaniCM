@@ -32,6 +32,9 @@ module.exports = function(config) {
 				type: Boolean,
 				default: true
 			}
+		},
+		template: {
+			type: String
 		}
 	});
 

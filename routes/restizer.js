@@ -447,13 +447,35 @@ var restizer = function(config, mongodbConnection, settings) {
 	self.custom = function(Model) {
 		return function(req, res) {
 			var query = url.parse(req.url, true).query;
-			var premise = Model.findById(req.params.id);
 			var action = req.params.action;
-			async.waterfall([
-				function(cb) {
-					settings.get(cb);
-				},
-				function(settings, cb) {
+			var id = req.params.id;
+			var customActions = [];
+			customActions.push(function(cb) {
+				settings.get(cb);
+			});
+			if(id == -1) {
+				customActions.push(function(settings, cb) {
+					var staticMethods = Model.staticMethods();
+					if(_.contains(staticMethods, action)) {
+						cb(null, settings);
+					} else {
+						cb({
+							message: 'Unknown action',
+							additionalMessage: {
+								action: action,
+								availableActions: staticMethods
+							},
+							code: 5005
+						});
+					}
+				});
+				customActions.push(function(settings, cb) {
+					Model[action](req, req.user, function(err, result) {
+						cb(err, result);
+					});
+				});
+			} else {
+				customActions.push(function(settings, cb) {
 					var instanceMethods = Model.instanceMethods();
 					if(_.contains(instanceMethods, action)) {
 						cb(null, settings);
@@ -467,18 +489,20 @@ var restizer = function(config, mongodbConnection, settings) {
 							code: 5005
 						});
 					}
-				},
-				function(settings, cb) {
+				});
+				customActions.push(function(settings, cb) {
+					var premise = Model.findById(id);
 					premise.exec(function(err, result) {
-						cb(err, result, settings)
+						cb(err, result, settings);
 					});
-				},
-				function(doc, settings, cb) {
+				});
+				customActions.push(function(doc, settings, cb) {
 					doc[action](req, req.user, function(err, result) {
 						cb(err, result);
 					});
-				}
-			], function(err, result) {
+				});
+			}
+			async.waterfall(customActions, function(err, result) {
 				if(err) {
 					var code = 5000;
 					if(err.code !== undefined) {
@@ -488,7 +512,11 @@ var restizer = function(config, mongodbConnection, settings) {
 					console.error(err);
 					return;
 				}
-				res.json(result);
+				if(typeof(result) == typeof('')) {
+					res.send(result);
+				} else {
+					res.json(result);
+				}
 			});
 		}
 	};
@@ -501,6 +529,7 @@ var restizer = function(config, mongodbConnection, settings) {
 		app.post('/' + urlName, self.add(Model));
 		app.delete('/' + urlName + '/:id', self.delete(Model));
 		app.put('/' + urlName + '/:id/:action', self.custom(Model));
+		app.get('/' + urlName + '/:id/:action/:customParam', self.custom(Model));
 	};
 };
 

@@ -1,0 +1,42 @@
+doctype html
+html
+	head
+		title
+			= 'RevaniCM ' + version 
+		link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.css')
+		link(rel='stylesheet', href='/css/style.css')
+	body(ng-app='RevaniCM')
+		div.jumbotron.header
+			div.container
+				subcontent(position='header')
+				//- ng-include(src='"subcontent/header"')
+				//- h1
+				//- 	a(href='#')
+				//- 		= settings.title
+				//- p
+				//- 	= settings.subtitle
+		//- span(ng-view)
+		//- div.jumbotron.footer
+		//- 	div.container
+		//- 		| Based On 
+		//- 		a(href='https://github.com/holgac/RevaniCM' target="_blank")
+		//- 			| RevaniCM
+		//- 		br
+		//- 		| No Rights Reserved
+		//- 	span(ng-controller='LoadingController')
+		//- 		div.loading-splash(ng-if='loaderCount > 0')
+		//- 			div.loading-text
+		//- 				= t('pleasewait')
+
+		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
+		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
+		script(type='text/javascript', src='/vendor/underscore/underscore.js')
+		script(type='text/javascript', src='/vendor/angular/angular.js')
+		script(type='text/javascript', src='/vendor/angular-route/angular-route.min.js')
+		script(type='text/javascript', src='/vendor/angular-bootstrap/ui-bootstrap.min.js')
+		script(type='text/javascript', src='/vendor/moment/min/moment.min.js')
+		script(type='text/javascript', src='/js/RevaniCM.js')
+		script(type='text/javascript', src='/js/RevaniCMServices.js')
+		script(type='text/javascript', src='/js/RevaniCMFilters.js')
+		script(type='text/javascript', src='/js/RevaniCMControllers.js')
+		script(type='text/javascript', src='/js/RevaniCMDirectives.js')

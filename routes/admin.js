@@ -10,7 +10,7 @@ var admin = function(config, mongodbConnection, settings) {
 				context = {
 					version: config.version
 				};
-				res.render('adminlogin', context);
+				res.render('revshine/adminlogin', context);
 				return;
 			}
 			req.user.permissions(function(err, permissions) {
@@ -44,7 +44,8 @@ var admin = function(config, mongodbConnection, settings) {
 				version: config.version,
 				settings: settings
 			};
-			res.render(viewName, context);
+			// temporarily hard coded, will be changed with the template system
+			res.render('revshine/'+viewName, context);
 		}
 	}
 	self.createAdminView = function(viewName) {

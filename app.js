@@ -15,6 +15,7 @@ function loadModels(config) {
 	require('./models/category')(config);
 	require('./models/menu')(config);
 	require('./models/settings')(config);
+	require('./models/subcontent')(config);
 };
 
 function connectMongoDB(config, callback) {
@@ -34,7 +35,7 @@ function connectMongoDB(config, callback) {
 function startServer(config, mongodbConnection, settings) {
 	var app = express();
 	app.set('port', process.env.PORT || 3000);
-	app.set('views', __dirname + '/views/' + config.template);
+	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
 	app.use(express.logger('dev'));
@@ -128,6 +129,7 @@ function startServer(config, mongodbConnection, settings) {
 	Restizer.restize(app, 'UserGroup','usergroup');
 	Restizer.restize(app, 'Category','category');
 	Restizer.restize(app, 'Menu','menu');
+	Restizer.restize(app, 'SubContent','subcontent');
 }
 
 function Main(config) {

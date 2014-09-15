@@ -9,7 +9,8 @@ var settingsManager = function(config, mongodbConnection) {
 		var settings = new Settings({
 			title: 'RevaniCM Demo',
 			subtitle: 'RevaniCM: A brand new Content Management System',
-			articleShortContentMaxSize: 400
+			articleShortContentMaxSize: 400,
+			template: 'melis'
 		});
 		settings.save(function(err, res) {
 			if(err) {

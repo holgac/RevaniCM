@@ -38,5 +38,19 @@ module.exports = {
 			// data.category is Category _id.
 			category: 2
 		}
+	},
+	SubContent: {
+		types: {
+			// A static text defined in data.text, in html format
+			text: 1,
+			// An image defined in data.image
+			image: 2,
+			// A menu defined in data.menu rendered with data.template
+			menu: 3,
+			// A menu defined in data.menu rendered with data.template
+			article: 4,
+			// A menu defined in data.menu rendered with data.template
+			articleList: 5
+		}
 	}
 }
