@@ -286,3 +286,39 @@ RevaniCMAdminControllers.controller('ViewSubcontentsController', ['$scope', '$ti
 			});
 		};
 }]);
+
+
+RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		$http.get('/subcontent/' + $routeParams.subcontentId).success(function(data) {
+			$scope.subcontent = data.element;
+			var positions = _.reduce($scope.subcontent.positions, function(memo, pos) {
+				return memo + pos + ', ';
+			}, '');
+			$scope.subcontent.positions = positions;
+		});
+		$scope.save = function() {
+			var positions = _.compact($scope.subcontent.positions.replace(/ /g, '').split(','));
+			var subcontentData = _.pick($scope.subcontent, ['name', 'type']);
+			subcontentData.positions = positions;
+			var dataFields = {
+				1: ['text']
+			};
+			subcontentData.data = _.pick($scope.subcontent.data, dataFields[subcontentData.type]);
+
+			if($scope.subcontent._id !== undefined) {
+				$http.put('/subcontent/' + $scope.subcontent._id, subcontentData).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewsubcontents');
+					}
+				});
+			} else {
+				$http.post('/subcontent', subcontentData).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewsubcontents');
+					}
+				});
+			}
+		};
+}]);

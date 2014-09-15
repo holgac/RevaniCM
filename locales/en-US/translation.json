@@ -37,7 +37,8 @@
 			"3":"Menu",
 			"4":"Single Article",
 			"5":"Article List"
-		}
+		},
+		"positions":"Positions"
 	},
 	"signin": "Sign In",
 	"date": "Date",
@@ -73,5 +74,6 @@
 			"usersaidpost": " said..."
 		}
 	},
-	"pleasewait": "Please Wait..."
+	"pleasewait": "Please Wait...",
+	"type":"Type"
 }

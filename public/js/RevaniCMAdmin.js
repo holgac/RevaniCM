@@ -65,7 +65,7 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'adminviewsubcontents',
 				controller: 'ViewSubcontentsController'
 		})
-		.when('/editcategory/:categoryId', {
+		.when('/editsubcontent/:subcontentId', {
 				templateUrl: 'admineditsubcontent',
 				controller: 'EditSubcontentController'
 		})

@@ -1,0 +1,23 @@
+div.container-fluid
+	h2.page-header= t('admin.addsubcontent')
+	div.container-fluid
+		div.row.form-horizontal
+			label.col-sm-1.control-label= t('name')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='subcontent.name')
+		div.row.form-horizontal
+			//- TODO: notify user that positions input is comma seperated.
+			// TODO: multiple widgets for each position?
+			label.col-sm-1.control-label= t('positions')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='subcontent.positions')
+		div.row.form-horizontal
+			label.col-sm-1.control-label= t('type')
+			div.col-sm-11
+				select.form-control
+					option(ng-repeat='type in [1,2,3,4,5]', value='type')
+						| {{ ('admin.subcontenttypes.' + type) | translate }}
+		div(text-angular, ng-model='subcontent.data.text', style='margin-top:1em')
+		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+		a.btn.btn-warning.pull-right(href='#viewsubcontents', style='margin-top:1em; margin-right:1em')= t('goback')
+
