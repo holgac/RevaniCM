@@ -53,6 +53,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @return {undefined}            undefined
 	 */
 	self.checkEditConstraints = function(Model, document, reqBody, user, settings, cb) {
+		// TODO: editing is allowed by default, need to check authorization for each model.
 		if(Model.canEditDocument === undefined) {
 			cb(null, document, reqBody, settings);
 		} else {

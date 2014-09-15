@@ -291,13 +291,21 @@ RevaniCMAdminControllers.controller('ViewSubcontentsController', ['$scope', '$ti
 RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$timeout',
 	'$http', '$rootScope', '$routeParams', '$location',
 	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
-		$http.get('/subcontent/' + $routeParams.subcontentId).success(function(data) {
-			$scope.subcontent = data.element;
-			var positions = _.reduce($scope.subcontent.positions, function(memo, pos) {
-				return memo + pos + ', ';
-			}, '');
-			$scope.subcontent.positions = positions;
-		});
+		if($routeParams.subcontentId) {
+			$http.get('/subcontent/' + $routeParams.subcontentId).success(function(data) {
+				$scope.subcontent = data.element;
+				var positions = _.reduce($scope.subcontent.positions, function(memo, pos) {
+					return memo + pos + ', ';
+				}, '');
+				$scope.subcontent.positions = positions;
+			});
+		} else {
+			$scope.subcontent = {
+				name: '',
+				data: {},
+				type: 1
+			}
+		}
 		$scope.save = function() {
 			var positions = _.compact($scope.subcontent.positions.replace(/ /g, '').split(','));
 			var subcontentData = _.pick($scope.subcontent, ['name', 'type']);

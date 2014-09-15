@@ -14,10 +14,11 @@ div.container-fluid
 		div.row.form-horizontal
 			label.col-sm-1.control-label= t('type')
 			div.col-sm-11
-				select.form-control
-					option(ng-repeat='type in [1,2,3,4,5]', value='type')
+				select.form-control(ng-model='subcontent.type')
+					option(ng-repeat='type in [1,2,3,4,5]', value='{{type}}')
 						| {{ ('admin.subcontenttypes.' + type) | translate }}
-		div(text-angular, ng-model='subcontent.data.text', style='margin-top:1em')
+		span(ng-switch='subcontent.type')
+			div(ng-switch-when='1', text-angular, ng-model='subcontent.data.text', style='margin-top:1em')
 		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
 		a.btn.btn-warning.pull-right(href='#viewsubcontents', style='margin-top:1em; margin-right:1em')= t('goback')
 

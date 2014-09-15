@@ -25,7 +25,9 @@ module.exports = {
 			// Can add/edit/delete categories
 			editCategory: 1<<8,
 			// Can add/edit/delete menus
-			editMenu: 1<<9
+			editMenu: 1<<9,
+			// Can add/edit/delete subcategories
+			editSubCategory: 1<<10
 		}
 	},
 	Menu: {

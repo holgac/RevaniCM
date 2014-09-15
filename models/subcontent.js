@@ -36,6 +36,53 @@ module.exports = function(config) {
 		}
 	});
 
+	SubContentSchema.statics.canAddDocument = function(body, user, settings, cb) {
+		if(body.name == undefined || body.name.length == 0) {
+			cb({
+				message: 'name is empty',
+				code: 5004
+			});
+			return;
+		}
+		if(body.type == undefined || isNaN(body.type)) {
+			cb({
+				message: 'type is undefined',
+				code: 5004
+			});
+			return;
+		}
+		if(!user) {
+			cb({
+				message: 'Unauthorized',
+				code:5002
+			});
+			return;
+		}
+		user.permissions(function(err, permissions) {
+			if(err) {
+				cb(err);
+				return;
+			}
+			var permCode = constants.UserGroup.permissions.editSubCategory;
+			if(permissions & permCode) {
+				cb();
+			} else {
+				cb({
+					message: 'Unauthorized',
+					code: 5002
+				});
+			}
+		});
+	};
+
+	ArticleSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
+		var dataFields = {
+			1: ['text']
+		};
+		instance.data = _.pick(instance.data, dataFields[instance.type]);
+		cb(null, instance);
+	};
+
 	SubContentSchema.statics.staticMethods = function() {
 		return ['at'];
 	};
