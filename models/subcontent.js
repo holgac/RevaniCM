@@ -15,6 +15,10 @@ module.exports = function(config) {
 	* SubContent Schema
 	*/
 	var SubContentSchema = new Schema({
+		// a name to identify subcontents
+		name: {
+			type: String
+		},
 		// a list of positions of the subcontent,
 		// each must match a position in the template and
 		// each must be unique.

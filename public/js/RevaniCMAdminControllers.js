@@ -272,3 +272,17 @@ RevaniCMAdminControllers.controller('EditCategoryController', ['$scope', '$timeo
 			}
 		};
 }]);
+
+RevaniCMAdminControllers.controller('ViewSubcontentsController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		$scope.subcontents = [];
+		$http.get('/subcontent').success(function(data) {
+			$scope.subcontents = data.elements;
+		});
+		$scope.remove = function(subcontent) {
+			$http.delete('/subcontent/' + subcontent._id).success(function(data) {
+				$scope.subcontents = _.without($scope.subcontents, subcontent);
+			});
+		};
+}]);

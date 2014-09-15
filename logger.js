@@ -39,6 +39,8 @@ var logger = function() {
 		log.save(function(err, res) {
 			if(err) {
 				console.log('LOGGING FAILED:');
+				console.error(err);
+				console.log('FAILED LOG:');
 				console.error(rawLog);
 			} else {
 				console.log('LOGGED:');

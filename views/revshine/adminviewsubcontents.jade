@@ -1,0 +1,28 @@
+div.container-fluid
+	h2.page-header= t('admin.subcontents')
+	div.container-fluid
+		a(href='#editsubcontent')
+			//- TODO: check for permissions to display this button
+			button.btn.btn-primary.pull-right= t('admin.addsubcontent')
+		table.table.table-striped.table-bordered.table-hover.table-condensed
+			thead
+				th= t('name')
+				th= t('type')
+				th= t('positions')
+			tbody
+				tr(ng-repeat='subcontent in subcontents')
+					td
+						a(ng-href='#editsubcontent/{{subcontent._id}}')
+							| {{subcontent.name}}
+					td
+						//- TODO: display meaningful entries, use a directive to translate
+						| {{subcontent.type}}
+					td
+						span(ng-repeat='position in subcontent.positions')
+							span(ng-if='$index != 0')
+								| , 
+							| {{position}}
+						a.btn.btn-danger.btn-xs.pull-right(ng-click='remove(subcontent)')
+							span.glyphicon.glyphicon-remove
+						a.btn.btn-success.btn-xs.pull-right(ng-href='#editsubcontent/{{subcontent._id}}')
+							span.glyphicon.glyphicon-pencil
