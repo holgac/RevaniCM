@@ -24,3 +24,17 @@ RevaniCMFilters.filter('cachedDocument', ['$http', 'documentCache', function($ht
 		}
 	};
 }]);
+
+RevaniCMFilters.filter('translate', ['$http', 'translationCache', function($http, translationCache) {
+	return function(key) {
+		if(key === undefined) {
+			return '---';
+		}
+		var value = translationCache.get(key);
+		if(value !== null) {
+			return value;
+		} else {
+			return key;
+		}
+	};
+}]);

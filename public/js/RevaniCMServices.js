@@ -56,3 +56,44 @@ RevaniCMServices.factory('documentCache', ['$http', function($http) {
 		get: self.get
 	};
 }]);
+
+
+RevaniCMServices.factory('translationCache', ['$http', function($http) {
+	var self = this;
+	// cacheMap[key] = value (translation of key)
+	self.cacheMap = {};
+	// requestCache[key] = true if requested
+	self.requestCache = {};
+	self.processRequests = _.debounce(function() {
+		console.log('processing requests');
+		var oldRequestCache = self.requestCache;
+		self.requestCache = {};
+		var keys = '';
+		_.each(oldRequestCache, function(trueVal, key) {
+			keys += key + ',';
+		});
+		keys = keys.substr(0, keys.length-1);
+		var url = '/translate/?keys=' + keys;
+		$http.get(url).success(function(data) {
+			_.each(data, function(value, key) {
+				self.cacheMap[key] = value;
+			});
+		});
+	}, 250);
+
+	self.get = function(key) {
+		console.log('requested ' + key);
+		if(self.cacheMap[key] !== undefined) {
+			return self.cacheMap[key];
+		}
+		if(self.requestCache[key] === undefined) {
+			self.requestCache[key] = true;
+			self.cacheMap[key] = '---';
+			self.processRequests();
+		}
+		return null;
+	};
+	return {
+		get: self.get
+	};
+}]);

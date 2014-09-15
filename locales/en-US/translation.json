@@ -27,7 +27,17 @@
 			"deleteuser": "Delete User",
 			"superadmin": "Super Admin"
 		},
-		"categories":"Categories"
+		"categories":"Categories",
+		"subcontents":"Subcontents",
+		"subcontentmanager":"Subcontent Manager",
+		"addsubcontent":"Add Subcontent",
+		"subcontenttypes": {
+			"1":"Static Text",
+			"2":"Static Image",
+			"3":"Menu",
+			"4":"Single Article",
+			"5":"Article List"
+		}
 	},
 	"signin": "Sign In",
 	"date": "Date",

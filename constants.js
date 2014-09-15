@@ -40,6 +40,7 @@ module.exports = {
 		}
 	},
 	SubContent: {
+		// WARNING: This must be synced with key 'admin.subcontenttypes.key' in translation file!
 		types: {
 			// A static text defined in data.text, in html format
 			text: 1,

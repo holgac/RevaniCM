@@ -130,6 +130,9 @@ function startServer(config, mongodbConnection, settings) {
 	Restizer.restize(app, 'Category','category');
 	Restizer.restize(app, 'Menu','menu');
 	Restizer.restize(app, 'SubContent','subcontent');
+
+	var translate = require('./routes/translate');
+	app.get('/translate', translate.view(config, mongodbConnection, settings));
 }
 
 function Main(config) {

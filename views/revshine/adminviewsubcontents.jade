@@ -16,7 +16,7 @@ div.container-fluid
 							| {{subcontent.name}}
 					td
 						//- TODO: display meaningful entries, use a directive to translate
-						| {{subcontent.type}}
+						| {{ ('admin.subcontenttypes.' + subcontent.type) | translate}}
 					td
 						span(ng-repeat='position in subcontent.positions')
 							span(ng-if='$index != 0')
