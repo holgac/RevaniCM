@@ -38,7 +38,8 @@
 			"4":"Single Article",
 			"5":"Article List"
 		},
-		"positions":"Positions"
+		"positions":"Positions",
+		"imagepath":"Image Path"
 	},
 	"signin": "Sign In",
 	"date": "Date",
@@ -75,5 +76,6 @@
 		}
 	},
 	"pleasewait": "Please Wait...",
-	"type":"Type"
+	"type":"Type",
+	"preview":"Preview"
 }

@@ -8,7 +8,7 @@ div.container-fluid
 		div.row.form-horizontal
 			//- TODO: notify user that positions input is comma seperated.
 			// TODO: multiple widgets for each position?
-			label.col-sm-1.control-label= t('positions')
+			label.col-sm-1.control-label= t('admin.positions')
 			div.col-sm-11
 				input.form-control(type='text', ng-model='subcontent.positions')
 		div.row.form-horizontal
@@ -19,6 +19,13 @@ div.container-fluid
 						| {{ ('admin.subcontenttypes.' + type) | translate }}
 		span(ng-switch='subcontent.type')
 			div(ng-switch-when='1', text-angular, ng-model='subcontent.data.text', style='margin-top:1em')
+		div.row.form-horizontal(ng-if='subcontent.type==2')
+			label.col-sm-1.control-label= t('admin.imagepath')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='subcontent.data.image')
+			label.col-sm-1.control-label= t('preview')
+			div.col-sm-11(ng-if='subcontent.data.image')
+				img(ng-src='{{subcontent.data.image}}')
 		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
 		a.btn.btn-warning.pull-right(href='#viewsubcontents', style='margin-top:1em; margin-right:1em')= t('goback')
 

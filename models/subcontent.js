@@ -75,9 +75,10 @@ module.exports = function(config) {
 		});
 	};
 
-	ArticleSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
+	SubContentSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
 		var dataFields = {
-			1: ['text']
+			1: ['text'],
+			2: ['image']
 		};
 		instance.data = _.pick(instance.data, dataFields[instance.type]);
 		cb(null, instance);
@@ -120,6 +121,10 @@ module.exports = function(config) {
 			// TODO: warning log if results.size > 1
 			if(result.type == types.text) {
 				cb(null, result.data.text);
+				return;
+			} else if(result.type == types.image) {
+				var resultHtml = '<img src="' + result.data.image + '"/>';
+				cb(null, resultHtml);
 				return;
 			}
 		});

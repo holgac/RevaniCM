@@ -311,7 +311,8 @@ RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$tim
 			var subcontentData = _.pick($scope.subcontent, ['name', 'type']);
 			subcontentData.positions = positions;
 			var dataFields = {
-				1: ['text']
+				1: ['text'],
+				2: ['image']
 			};
 			subcontentData.data = _.pick($scope.subcontent.data, dataFields[subcontentData.type]);
 
