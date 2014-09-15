@@ -20,8 +20,7 @@ var cms = function(config, mongodbConnection, settings) {
 				settings:settings,
 				user:req.user
 			};
-			// temporarily hard coded, will be changed with the template system
-			res.render('melis/'+viewName, context);
+			res.render(settings.template + '/' + viewName, context);
 		};
 	};
 	self.createCMSView = function(viewName) {

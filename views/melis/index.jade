@@ -8,25 +8,16 @@ html
 	body(ng-app='RevaniCM')
 		div.jumbotron.header
 			div.container
-				subcontent(position='header')
-				//- ng-include(src='"subcontent/header"')
-				//- h1
-				//- 	a(href='#')
-				//- 		= settings.title
-				//- p
-				//- 	= settings.subtitle
+				a(href='#')
+					subcontent(position='header')
 		//- span(ng-view)
-		//- div.jumbotron.footer
-		//- 	div.container
-		//- 		| Based On 
-		//- 		a(href='https://github.com/holgac/RevaniCM' target="_blank")
-		//- 			| RevaniCM
-		//- 		br
-		//- 		| No Rights Reserved
-		//- 	span(ng-controller='LoadingController')
-		//- 		div.loading-splash(ng-if='loaderCount > 0')
-		//- 			div.loading-text
-		//- 				= t('pleasewait')
+		div.jumbotron.footer
+			div.container
+				subcontent(position='footer')
+			span(ng-controller='LoadingController')
+				div.loading-splash(ng-if='loaderCount > 0')
+					div.loading-text
+						= t('pleasewait')
 
 		script(type='text/javascript', src='/vendor/jquery/dist/jquery.min.js')
 		script(type='text/javascript', src='/vendor/bootstrap/dist/js/bootstrap.min.js')
