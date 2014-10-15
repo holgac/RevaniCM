@@ -165,7 +165,7 @@ RevaniCMAdminControllers.controller('EditUserGroupController', ['$scope', '$time
 				name:'adminlogin',
 				value:1
 			}
-		]
+		];
 }]);
 
 RevaniCMAdminControllers.controller('ViewUserGroupsController', ['$scope', '$timeout',
@@ -304,7 +304,7 @@ RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$tim
 				name: '',
 				data: {},
 				type: 1
-			}
+			};
 		}
 		$scope.save = function() {
 			var positions = _.compact($scope.subcontent.positions.replace(/ /g, '').split(','));
@@ -329,5 +329,37 @@ RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$tim
 					}
 				});
 			}
+		};
+}]);
+
+RevaniCMAdminControllers.controller('ViewMenusController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		$scope.menus = [];
+		$http.get('/menu').success(function(data) {
+			$scope.menus = data.elements;
+		});
+		$scope.remove = function(menu) {
+			$http.delete('/menu/' + menu._id).success(function(data) {
+				$scope.menus = _.without($scope.menus, menu);
+			});
+		};
+}]);
+
+
+RevaniCMAdminControllers.controller('EditMenuController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+		if($routeParams.menuId) {
+			$http.get('/menu/' + $routeParams.menuId).success(function(data) {
+				$scope.menu = data.element;
+			});
+		} else {
+			$scope.menu = {
+				name: '',
+				subMenus: [],
+			};
+		}
+		$scope.save = function() {
 		};
 }]);

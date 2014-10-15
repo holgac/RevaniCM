@@ -39,7 +39,10 @@
 			"5":"Article List"
 		},
 		"positions":"Positions",
-		"imagepath":"Image Path"
+		"imagepath":"Image Path",
+		"menumanager":"Menu Manager",
+		"menus":"Menus",
+		"addmenu":"Add Menu"
 	},
 	"signin": "Sign In",
 	"date": "Date",

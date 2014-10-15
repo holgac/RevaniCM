@@ -1,0 +1,18 @@
+div.container-fluid
+	h2.page-header= t('admin.menus')
+	div.container-fluid
+		a(href='#editmenu')
+			//- TODO: check for permissions to display this button
+			button.btn.btn-primary.pull-right= t('admin.addmenu')
+		table.table.table-striped.table-bordered.table-hover.table-condensed
+			thead
+				th= t('name')
+			tbody
+				tr(ng-repeat='menu in menus')
+					td
+						a(ng-href='#editsubcontent/{{subcontent._id}}')
+							| {{menu.name}}
+						a.btn.btn-danger.btn-xs.pull-right(ng-click='remove(menu)')
+							span.glyphicon.glyphicon-remove
+						a.btn.btn-success.btn-xs.pull-right(ng-href='#editmenu/{{menu._id}}')
+							span.glyphicon.glyphicon-pencil

@@ -1,0 +1,10 @@
+div.container-fluid
+	h2.page-header= t('admin.addmenu')
+	div.container-fluid
+		div.row.form-horizontal
+			label.col-sm-1.control-label= t('name')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='menu.name')
+		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
+		a.btn.btn-warning.pull-right(href='#viewmenus', style='margin-top:1em; margin-right:1em')= t('goback')
+

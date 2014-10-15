@@ -73,6 +73,18 @@ RevaniCMAdmin.config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'admineditsubcontent',
 				controller: 'EditSubcontentController'
 		})
+		.when('/viewmenus', {
+				templateUrl: 'adminviewmenus',
+				controller: 'ViewMenusController'
+		})
+		.when('/editmenu/:menuId', {
+				templateUrl: 'admineditmenu',
+				controller: 'EditMenuController'
+		})
+		.when('/editmenu', {
+				templateUrl: 'admineditmenu',
+				controller: 'EditMenuController'
+		})
 		.otherwise({
 				redirectTo: '/'
 		});
