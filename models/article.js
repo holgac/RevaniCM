@@ -67,6 +67,13 @@ module.exports = function(config) {
 			});
 			return;
 		}
+		if(body.category == undefined) {
+			cb({
+				message: 'category is unspecified',
+				code:5004
+			});
+			return;
+		}
 		if(!user) {
 			cb({
 				message: 'Unauthorized',
@@ -118,7 +125,7 @@ module.exports = function(config) {
 	};
 
 	ArticleSchema.statics.jsonizeDocuments = function(instances, requestedFields, user, cb) {
-		var fields = ['_id', 'title', 'content', 'contentShort', 'creator', 'created', 'comments', 'commentCount'];
+		var fields = ['_id', 'title', 'content', 'contentShort', 'creator', 'category', 'created', 'comments', 'commentCount'];
 		if(requestedFields !== null) {
 			fields = _.intersection(fields, requestedFields);
 		}

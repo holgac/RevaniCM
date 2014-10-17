@@ -1,8 +1,8 @@
 var RevaniCMAdminControllers = angular.module('RevaniCMAdmin.controllers', ['textAngular']);
 
 RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeout',
-	'$http', '$rootScope', '$routeParams', '$location',
-	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+	'$http', '$rootScope', '$routeParams', '$location', '$modal',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modal) {
 		if($routeParams.articleId) {
 			$http.get('/article/' + $routeParams.articleId).success(function(data) {
 				$scope.article = data.element;
@@ -15,18 +15,29 @@ RevaniCMAdminControllers.controller('EditArticleController', ['$scope', '$timeou
 		}
 		$scope.save = function() {
 			if($scope.article._id !== undefined) {
-				$http.put('/article/' + $scope.article._id, _.pick($scope.article, ['title', 'content'])).success(function(data) {
+				$http.put('/article/' + $scope.article._id, _.pick($scope.article, ['title', 'content', 'category'])).success(function(data) {
 					if(data.success === true) {
 						$location.url('/viewarticles');
 					}
 				});
 			} else {
-				$http.post('/article', _.pick($scope.article, ['title', 'content'])).success(function(data) {
+				$http.post('/article', _.pick($scope.article, ['title', 'content', 'category'])).success(function(data) {
 					if(data.success === true) {
 						$location.url('/viewarticles');
 					}
 				});
 			}
+		};
+		$scope.selectCategory = function() {
+			$modal.open({
+				templateUrl: '/adminselectcategory',
+				controller: 'CategorySelectorController',
+				size: 'lg',
+			}).result.then(function(category) {
+				if(category) {
+					$scope.article.category = category;
+				}
+			});
 		};
 }]);
 

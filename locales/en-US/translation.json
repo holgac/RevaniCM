@@ -6,6 +6,7 @@
 		"articlemanager": "Article Manager",
 		"articles": "Articles",
 		"addarticle": "Add Article",
+		"editarticle": "Edit Article",
 		"viewarticles": "View Articles",
 		"title": "Title",
 		"save": "Save",
@@ -86,5 +87,6 @@
 	},
 	"pleasewait": "Please Wait...",
 	"type":"Type",
-	"preview":"Preview"
+	"preview":"Preview",
+	"category":"Category"
 }
