@@ -348,11 +348,16 @@ RevaniCMAdminControllers.controller('ViewMenusController', ['$scope', '$timeout'
 
 
 RevaniCMAdminControllers.controller('EditMenuController', ['$scope', '$timeout',
-	'$http', '$rootScope', '$routeParams', '$location',
-	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+	'$http', '$rootScope', '$routeParams', '$location', '$modal',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modal) {
 		if($routeParams.menuId) {
 			$http.get('/menu/' + $routeParams.menuId).success(function(data) {
 				$scope.menu = data.element;
+				_.each($scope.menu.subMenus, function(subMenu) {
+					// subMenu.type = '' + subMenu.type;
+					console.log(subMenu.type);
+					console.log(typeof(subMenu.type));
+				})
 			});
 		} else {
 			$scope.menu = {
@@ -361,5 +366,85 @@ RevaniCMAdminControllers.controller('EditMenuController', ['$scope', '$timeout',
 			};
 		}
 		$scope.save = function() {
+			var menuData = _.pick($scope.menu, 'name','subMenus');
+			if($scope.menu._id !== undefined) {
+				$http.put('/menu/' + $scope.menu._id, menuData).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewmenus');
+					}
+				});
+			} else {
+				$http.post('/menu', menuData).success(function(data) {
+					if(data.success === true) {
+						$location.url('/viewmenus');
+					}
+				});
+			}
 		};
+		$scope.addSubMenu = function() {
+			$scope.menu.subMenus.push({
+				name: 'Unnamed',
+				type: 1,
+				data: {
+					article: null
+				}
+			});
+		};
+		$scope.removeSubMenu = function(subMenu) {
+			$scope.menu.subMenus = _.without($scope.menu.subMenus, subMenu);
+		};
+
+		$scope.selectArticle = function(subMenu) {
+			$modal.open({
+				templateUrl: '/adminselectarticle',
+				controller: 'ArticleSelectorController',
+				size: 'lg',
+			}).result.then(function(article) {
+				if(article) {
+					subMenu.data.article = article;
+				}
+			});
+		};
+		$scope.selectCategory = function(subMenu) {
+			$modal.open({
+				templateUrl: '/adminselectcategory',
+				controller: 'CategorySelectorController',
+				size: 'lg',
+			}).result.then(function(category) {
+				if(category) {
+					subMenu.data.category = category;
+				}
+			});
+		};
+}]);
+
+RevaniCMAdminControllers.controller('ArticleSelectorController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location', '$modalInstance',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modalInstance) {
+		$scope.articles = [];
+		$http.get('/article').success(function(data) {
+			$scope.articles = data.elements;
+		});
+		$scope.close = function() {
+			$modalInstance.dismiss('cancel');
+		}
+		$scope.selectArticle = function(article) {
+			$modalInstance.close(article._id);
+		}
+}]);
+
+RevaniCMAdminControllers.controller('CategorySelectorController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location', '$modalInstance',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modalInstance) {
+		$scope.categories = [];
+		$http.get('/category').success(function(data) {
+			$scope.categories = data.elements;
+			$scope.categoryMap = _.indexBy(data.elements, '_id');
+		});
+		$scope.close = function() {
+			$modalInstance.dismiss('cancel');
+		}
+		$scope.selectCategory = function(category) {
+			$modalInstance.close(category._id);
+		}
 }]);

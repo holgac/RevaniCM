@@ -1,0 +1,19 @@
+div.modal-header
+	button.close(type='button' ng-click='close()')= '×'
+	h2.modal-title(ng-if='isNew')= t('admin.selectarticle')
+div.modal-body
+	table.table.table-striped.table-bordered.table-hover.table-condensed
+		thead
+			th= t('date')
+			th= t('title')
+			th= t('createdby')
+		tbody
+			tr(ng-repeat='article in articles')
+				td
+					| {{article.created}}
+				td
+					a(ng-click='selectArticle(article)')
+						| {{article.title}}
+				td
+					| {{article.creator | cachedDocument:'user':'name'}}
+

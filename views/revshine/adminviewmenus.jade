@@ -10,7 +10,7 @@ div.container-fluid
 			tbody
 				tr(ng-repeat='menu in menus')
 					td
-						a(ng-href='#editsubcontent/{{subcontent._id}}')
+						a(ng-href='#editmenu/{{menu._id}}')
 							| {{menu.name}}
 						a.btn.btn-danger.btn-xs.pull-right(ng-click='remove(menu)')
 							span.glyphicon.glyphicon-remove

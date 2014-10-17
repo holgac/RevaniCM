@@ -63,5 +63,19 @@ module.exports = function(config) {
 		});
 		cb(null, jsonized);
 	};
+	MenuSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
+		var subMenuFields = {
+			1: ['article'],
+			2: ['category']
+		};
+		// TODO: Error check
+		_.each(instance.subMenus, function(subMenu) {
+			subMenu.type = parseInt(subMenu.type);
+			subMenu.data = _.pick(subMenu.data, subMenuFields[subMenu.type]);
+		});
+		instance.markModified('subMenus');
+		cb(null, instance);
+	};
+
 	mongoose.model('Menu', MenuSchema, 'menus');
 };

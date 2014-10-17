@@ -42,7 +42,13 @@
 		"imagepath":"Image Path",
 		"menumanager":"Menu Manager",
 		"menus":"Menus",
-		"addmenu":"Add Menu"
+		"addmenu":"Add Menu",
+		"submenutypes": {
+			"1":"Single Article",
+			"2":"Category"
+		},
+		"selectarticle":"Select Article",
+		"selectcategory":"Select Category"
 	},
 	"signin": "Sign In",
 	"date": "Date",

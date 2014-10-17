@@ -1,0 +1,13 @@
+//- TODO: display category hierarchy
+div.modal-header
+	button.close(type='button' ng-click='close()')= '×'
+	h2.modal-title(ng-if='isNew')= t('admin.selectcategory')
+div.modal-body
+	table.table.table-striped.table-bordered.table-hover.table-condensed
+		thead
+			th= t('title')
+		tbody
+			tr(ng-repeat='category in categories')
+				td
+					a(ng-click='selectCategory(category)')
+						| {{category.name}}

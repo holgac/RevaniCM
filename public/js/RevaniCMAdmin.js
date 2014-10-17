@@ -4,6 +4,7 @@
 var RevaniCMAdmin = angular.module('RevaniCMAdmin', [
 	'ngRoute',
 	'ui.bootstrap',
+	'ui.bootstrap.modal',
 	'ui.tree',
 	'RevaniCMAdmin.controllers',
 	'RevaniCMAdmin.directives',

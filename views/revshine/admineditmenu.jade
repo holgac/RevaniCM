@@ -5,6 +5,42 @@ div.container-fluid
 			label.col-sm-1.control-label= t('name')
 			div.col-sm-11
 				input.form-control(type='text', ng-model='menu.name')
+		div
+			h3
+				= t('admin.submenus')
+			table.table.table-striped.table-bordered.table-hover.table-condensed
+				thead
+					th(style='width:10em;')= t('name')
+					//- TODO: remove hard coded styles
+					th(style='width:10em;')= t('type')
+					th
+						= t('details')
+						a.btn.btn-success.btn-xs.pull-right(ng-click='addSubMenu()')
+							span.glyphicon.glyphicon-plus
+
+				tbody
+					tr(ng-repeat='subMenu in menu.subMenus')
+						td
+							input.form-control(ng-model='subMenu.name')
+						td
+							select.form-control(ng-model='subMenu.type' ng-options="(('admin.submenutypes.' + type) | translate) for type in [1,2]")
+						td
+							a.btn.btn-danger.btn-xs.pull-right(ng-click='removeSubMenu(subMenu)')
+								span.glyphicon.glyphicon-remove
+							span(ng-if='subMenu.type == 1')
+								span(ng-if='subMenu.data.article != null')
+									| {{subMenu.data.article | cachedDocument:'article':'title'}}
+								span(ng-if='subMenu.data.article == null')
+									= t('admin.selectarticle')
+								a.btn.btn-success.btn-xs.pull-right(ng-click='selectArticle(subMenu)')
+									span.glyphicon.glyphicon-pencil
+							span(ng-if='subMenu.type == 2')
+								span(ng-if='subMenu.data.category != null')
+									| {{subMenu.data.category | cachedDocument:'category':'name'}}
+								span(ng-if='subMenu.data.category == null')
+									= t('admin.selectcategory')
+								a.btn.btn-success.btn-xs.pull-right(ng-click='selectCategory(subMenu)')
+									span.glyphicon.glyphicon-pencil
 		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
 		a.btn.btn-warning.pull-right(href='#viewmenus', style='margin-top:1em; margin-right:1em')= t('goback')
 
