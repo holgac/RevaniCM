@@ -300,8 +300,8 @@ RevaniCMAdminControllers.controller('ViewSubcontentsController', ['$scope', '$ti
 
 
 RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$timeout',
-	'$http', '$rootScope', '$routeParams', '$location',
-	function($scope, $timeout, $http, $rootScope, $routeParams, $location) {
+	'$http', '$rootScope', '$routeParams', '$location', '$modal',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modal) {
 		if($routeParams.subcontentId) {
 			$http.get('/subcontent/' + $routeParams.subcontentId).success(function(data) {
 				$scope.subcontent = data.element;
@@ -323,7 +323,8 @@ RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$tim
 			subcontentData.positions = positions;
 			var dataFields = {
 				1: ['text'],
-				2: ['image']
+				2: ['image'],
+				3: ['menu', 'template']
 			};
 			subcontentData.data = _.pick($scope.subcontent.data, dataFields[subcontentData.type]);
 
@@ -341,6 +342,21 @@ RevaniCMAdminControllers.controller('EditSubcontentController', ['$scope', '$tim
 				});
 			}
 		};
+
+		$scope.selectMenu = function() {
+			$modal.open({
+				templateUrl: '/adminselectmenu',
+				controller: 'MenuSelectorController',
+				size: 'lg',
+			}).result.then(function(menu) {
+				if(menu) {
+					if(!$scope.subcontent.data) {
+						$scope.subcontent.data = {};
+					}
+					$scope.subcontent.data.menu = menu;
+				}
+			});
+		}
 }]);
 
 RevaniCMAdminControllers.controller('ViewMenusController', ['$scope', '$timeout',
@@ -450,12 +466,26 @@ RevaniCMAdminControllers.controller('CategorySelectorController', ['$scope', '$t
 		$scope.categories = [];
 		$http.get('/category').success(function(data) {
 			$scope.categories = data.elements;
-			$scope.categoryMap = _.indexBy(data.elements, '_id');
 		});
 		$scope.close = function() {
 			$modalInstance.dismiss('cancel');
 		}
 		$scope.selectCategory = function(category) {
 			$modalInstance.close(category._id);
+		}
+}]);
+
+RevaniCMAdminControllers.controller('MenuSelectorController', ['$scope', '$timeout',
+	'$http', '$rootScope', '$routeParams', '$location', '$modalInstance',
+	function($scope, $timeout, $http, $rootScope, $routeParams, $location, $modalInstance) {
+		$scope.menus = [];
+		$http.get('/menu').success(function(data) {
+			$scope.menus = data.elements;
+		});
+		$scope.close = function() {
+			$modalInstance.dismiss('cancel');
+		}
+		$scope.selectMenu = function(menu) {
+			$modalInstance.close(menu._id);
 		}
 }]);

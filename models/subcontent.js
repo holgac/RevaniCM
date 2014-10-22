@@ -78,7 +78,8 @@ module.exports = function(config) {
 	SubContentSchema.statics.sanitizeDocument = function(instance, user, settings, cb) {
 		var dataFields = {
 			1: ['text'],
-			2: ['image']
+			2: ['image'],
+			3: ['menu', 'template'],
 		};
 		instance.data = _.pick(instance.data, dataFields[instance.type]);
 		cb(null, instance);

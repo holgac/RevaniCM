@@ -68,6 +68,7 @@ var admin = function(config, mongodbConnection, settings) {
 		editmenu: self.createAdminView('admineditmenu'),
 		selectarticle: self.createAdminView('adminselectarticle'),
 		selectcategory: self.createAdminView('adminselectcategory'),
+		selectmenu: self.createAdminView('adminselectmenu'),
 		setup: function(req, res) {
 			var User = mongodbConnection.model('User');
 			var UserGroup = mongodbConnection.model('UserGroup');

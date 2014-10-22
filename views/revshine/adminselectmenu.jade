@@ -1,0 +1,12 @@
+div.modal-header
+	button.close(type='button' ng-click='close()')= '×'
+	h2.modal-title= t('admin.selectmenu')
+div.modal-body
+	table.table.table-striped.table-bordered.table-hover.table-condensed
+		thead
+			th= t('name')
+		tbody
+			tr(ng-repeat='menu in menus')
+				td
+					a(ng-click='selectMenu(menu)')
+						| {{menu.name}}
