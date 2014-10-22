@@ -390,7 +390,18 @@ var restizer = function(config, mongodbConnection, settings) {
 				},
 				function(settings, cb) {
 					premise.exec(function(err, res) {
-						cb(err, res, settings)
+						if(err) {
+							cb(err);
+						} else if(res == null) {
+							var error = {
+								code: 404,
+								message: 'Article Not Found',
+								additionalMessage: 'Article With _id ' + req.params.id + ' Not Found',
+							}
+							cb(error);
+						} else {
+							cb(err, res, settings)
+						}
 					});
 				},
 				function(doc, settings, cb) {
