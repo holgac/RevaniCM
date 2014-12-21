@@ -32,7 +32,7 @@ function connectMongoDB(config, callback) {
 	});
 }
 
-function startServer(config, mongodbConnection, settings) {
+function startServer(config, mongodbConnection, settingsManager) {
 	var app = express();
 	app.set('port', process.env.PORT || 3000);
 	app.set('views', __dirname + '/views');
@@ -105,7 +105,7 @@ function startServer(config, mongodbConnection, settings) {
 	http.createServer(app).listen(app.get('port'), function() {
 	  console.log('Express server listening on port ' + app.get('port'));
 	});
-	var cmsRoutes = require('./routes/cms').views(config, mongodbConnection, settings);
+	var cmsRoutes = require('./routes/cms').views(config, mongodbConnection, settingsManager);
 
 	_.each(cmsRoutes, function(route, routeName) {
 		if(routeName == 'index') {
@@ -115,7 +115,7 @@ function startServer(config, mongodbConnection, settings) {
 		}
 	});
 
-	var adminRoutes = require('./routes/admin').views(config, mongodbConnection, settings);
+	var adminRoutes = require('./routes/admin').views(config, mongodbConnection, settingsManager);
 	_.each(adminRoutes, function(route, routeName) {
 		if(routeName == 'index') {
 			app.get(config.admin_url, adminRoutes.index);
@@ -123,7 +123,7 @@ function startServer(config, mongodbConnection, settings) {
 			app.get(config.admin_url + routeName, route);
 		}
 	});
-	var Restizer = require('./routes/restizer').restizer(config, mongodbConnection, settings);
+	var Restizer = require('./routes/restizer').restizer(config, mongodbConnection, settingsManager);
 	Restizer.restize(app, 'Article','article');
 	Restizer.restize(app, 'User','user');
 	Restizer.restize(app, 'UserGroup','usergroup');
@@ -132,7 +132,7 @@ function startServer(config, mongodbConnection, settings) {
 	Restizer.restize(app, 'SubContent','subcontent');
 
 	var translate = require('./routes/translate');
-	app.get('/translate', translate.view(config, mongodbConnection, settings));
+	app.get('/translate', translate.view(config, mongodbConnection, settingsManager));
 }
 
 function Main(config) {
@@ -148,8 +148,8 @@ function Main(config) {
 		}
 		loadModels(config);
 		var mongodbConnection = results.mongodb;
-		var settings = require('./settings').settings(config, mongodbConnection);
-		startServer(config, mongodbConnection, settings);
+		var settingsManager = require('./settings').settings(config, mongodbConnection);
+		startServer(config, mongodbConnection, settingsManager);
 	});
 }
 

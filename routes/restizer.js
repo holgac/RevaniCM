@@ -11,10 +11,10 @@ var sanitizeHtml = require('sanitize-html');
  * can be customized using static methods of collections.
  * @param  {Object} config            config instance injected from app
  * @param  {Object} mongodbConnection mongodb connection instance injected from app
- * @param  {Object} settings          settings getter class injected from app
+ * @param  {Object} settingsManager   settings manager class injected from app
  * @return {Object}                   Restizer instance to restize collections
  */
-var restizer = function(config, mongodbConnection, settings) {
+var restizer = function(config, mongodbConnection, settingsManager) {
 	var self = this;
 
 	/**
@@ -23,7 +23,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {Object}   reqBody  request body, the body to create object from
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after checking for constraints.
 	 *                             should be called as cb(error, settings)
 	 * @return {undefined}            undefined
@@ -45,7 +45,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   document document to be updated
 	 * @param  {Object}   reqBody  request body, the body to modify object
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after checking for constraints.
 	 *                             should be called as cb(error, document, newBody, settings)
 	 *                             where newBody contains to-be-modified fields
@@ -70,7 +70,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {String}   docId    id of the document to be deleted
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after checking for constraints.
 	 *                             should be called as cb(error, settings)
 	 * @return {undefined}            undefined
@@ -90,7 +90,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {Object}   reqBody  request body, the body to create object from
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after creating the document
 	 *                             should be called as cb(error, document, settings)
 	 * @return {undefined}            undefined
@@ -111,7 +111,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   document document to be updated
 	 * @param  {Object}   reqBody  request body, the body to modify object
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after modifying the document
 	 *                             should be called as cb(error, document, settings)
 	 *                             document should be modified here
@@ -135,7 +135,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {String}   docId    document id
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after deleting the document
 	 *                             should be called as cb(error)
 	 * @return {undefined}            undefined
@@ -157,7 +157,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {Object}   doc      mongoose document (not necessarily an existing one)
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings doc got from settings getter
+	 * @param  {Object}   settings settings doc got from settings manager
 	 * @param  {Function} cb       callback to be called after sanitizing the document
 	 *                             should be called as cb(error, document, settings)
 	 * @return {undefined}            undefined
@@ -178,7 +178,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 * @param  {Object}   Model    mongoose model
 	 * @param  {Object}   doc mongoose document to be inserted
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after saving the document
 	 *                             should be called as cb(error, savedDocument, settings)
 	 * @return {undefined}            undefined
@@ -205,7 +205,7 @@ var restizer = function(config, mongodbConnection, settings) {
 	 *                             with the requested fields if certain
 	 *                             conditions are not met.
 	 * @param  {Object}   user     User document or null if not logged in
-	 * @param  {Object}   settings settings document got from settings getter
+	 * @param  {Object}   settings settings document got from settings manager
 	 * @param  {Function} cb       callback to be called after jsonizing the documents
 	 *                             should be called as cb(error, [jsonizedObject, ...], settings)
 	 * @return {undefined}             undefined
@@ -238,7 +238,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			var user = req.user;
 			async.waterfall([
 				function(cb) {
-					settings.get(cb);
+					settingsManager.get(cb);
 				},
 				function(settings, cb) {
 					self.checkAddConstraints(Model, req.body, user, settings, cb);
@@ -275,7 +275,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			var user = req.user;
 			async.waterfall([
 				function(cb) {
-					settings.get(cb);
+					settingsManager.get(cb);
 				},
 				function(settings, cb) {
 					Model.findById(req.params.id, function(err, res) {
@@ -351,7 +351,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			}
 			async.waterfall([
 				function(cb) {
-					settings.get(cb);
+					settingsManager.get(cb);
 				},
 				function(settings, cb) {
 					premise.exec(function(err, res) {
@@ -386,7 +386,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			var premise = Model.findById(req.params.id);
 			async.waterfall([
 				function(cb) {
-					settings.get(cb);
+					settingsManager.get(cb);
 				},
 				function(settings, cb) {
 					premise.exec(function(err, res) {
@@ -431,7 +431,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			var docId = req.params.id;
 			async.waterfall([
 				function(cb) {
-					settings.get(cb);
+					settingsManager.get(cb);
 				},
 				function(settings, cb) {
 					self.checkDeleteConstraints(Model, docId, req.user, settings, cb);
@@ -463,7 +463,7 @@ var restizer = function(config, mongodbConnection, settings) {
 			var id = req.params.id;
 			var customActions = [];
 			customActions.push(function(cb) {
-				settings.get(cb);
+				settingsManager.get(cb);
 			});
 			if(id == -1) {
 				customActions.push(function(settings, cb) {
@@ -545,6 +545,6 @@ var restizer = function(config, mongodbConnection, settings) {
 	};
 };
 
-exports.restizer = function(config, mongodbConnection, settings) {
-	return new restizer(config, mongodbConnection, settings);
+exports.restizer = function(config, mongodbConnection, settingsManager) {
+	return new restizer(config, mongodbConnection, settingsManager);
 };
