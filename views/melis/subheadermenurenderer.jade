@@ -1,0 +1,9 @@
+each submenu in menu.subMenus
+	div
+		if submenu.type == constants.Menu.types.singleArticle
+			a(href='/#/article/' + submenu.data.article)
+				= submenu.name
+		if submenu.type == constants.Menu.types.category
+			a(href='/#/category/' + submenu.data.category)
+				= submenu.name
+		

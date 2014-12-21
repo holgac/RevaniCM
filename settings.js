@@ -1,4 +1,4 @@
-// settings class should be injected to all necessary classes.
+// settingsManager should be injected to all necessary classes.
 // no file should require it directly, otherwise more than one
 // instances might be created, resulting in inconsistency.
 var settingsManager = function(config, mongodbConnection) {
@@ -49,6 +49,6 @@ var settingsManager = function(config, mongodbConnection) {
 	};
 };
 
-exports.settings = function(config, mongodbConnection) {
+exports.settingsManager = function(config, mongodbConnection) {
 	return new settingsManager(config, mongodbConnection);
 };

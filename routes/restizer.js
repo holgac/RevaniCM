@@ -456,7 +456,7 @@ var restizer = function(config, mongodbConnection, settingsManager) {
 		}
 	}
 
-	self.custom = function(Model) {
+	self.custom = function(Model, app) {
 		return function(req, res) {
 			var query = url.parse(req.url, true).query;
 			var action = req.params.action;
@@ -482,7 +482,7 @@ var restizer = function(config, mongodbConnection, settingsManager) {
 					}
 				});
 				customActions.push(function(settings, cb) {
-					Model[action](req, req.user, settings, function(err, result) {
+					Model[action](req, req.user, settings, app, function(err, result) {
 						cb(err, result);
 					});
 				});
@@ -509,7 +509,7 @@ var restizer = function(config, mongodbConnection, settingsManager) {
 					});
 				});
 				customActions.push(function(doc, settings, cb) {
-					doc[action](req, req.user, settings, function(err, result) {
+					doc[action](req, req.user, settings, app, function(err, result) {
 						cb(err, result);
 					});
 				});
@@ -540,8 +540,8 @@ var restizer = function(config, mongodbConnection, settingsManager) {
 		app.put('/' + urlName + '/:id', self.edit(Model));
 		app.post('/' + urlName, self.add(Model));
 		app.delete('/' + urlName + '/:id', self.delete(Model));
-		app.put('/' + urlName + '/:id/:action', self.custom(Model));
-		app.get('/' + urlName + '/:id/:action/:customParam', self.custom(Model));
+		app.put('/' + urlName + '/:id/:action', self.custom(Model, app));
+		app.get('/' + urlName + '/:id/:action/:customParam', self.custom(Model, app));
 	};
 };
 

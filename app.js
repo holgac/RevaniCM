@@ -148,7 +148,7 @@ function Main(config) {
 		}
 		loadModels(config);
 		var mongodbConnection = results.mongodb;
-		var settingsManager = require('./settings').settings(config, mongodbConnection);
+		var settingsManager = require('./settings').settingsManager(config, mongodbConnection);
 		startServer(config, mongodbConnection, settingsManager);
 	});
 }

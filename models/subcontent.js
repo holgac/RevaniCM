@@ -89,7 +89,7 @@ module.exports = function(config) {
 		return ['at'];
 	};
 
-	SubContentSchema.statics.at = function(request, user, settings, cb) {
+	SubContentSchema.statics.at = function(request, user, settings, app, cb) {
 		var SubContent = mongoose.model('SubContent');
 		var position = request.params.customParam;
 		var positionPipeline = [
@@ -109,7 +109,7 @@ module.exports = function(config) {
 				cb(err);
 				return;
 			}
-			var result = null;
+			var subcontent = null;
 			if(results.length == 0) {
 				cb({
 					message: 'SubContent not found!',
@@ -117,18 +117,18 @@ module.exports = function(config) {
 				});
 				return;
 			}
-			result = results[0];
+			var subcontent = results[0];
 			var types = constants.SubContent.types;
 			// TODO: warning log if results.size > 1
-			if(result.type == types.text) {
-				cb(null, result.data.text);
+			if(subcontent.type == types.text) {
+				cb(null, subcontent.data.text);
 				return;
-			} else if(result.type == types.image) {
-				var resultHtml = '<img src="' + result.data.image + '"/>';
+			} else if(subcontent.type == types.image) {
+				var resultHtml = '<img src="' + subcontent.data.image + '"/>';
 				cb(null, resultHtml);
 				return;
-			} else if(result.type == types.menu) {
-				mongoose.model('Menu').findById(result.data.menu).exec(function(err, res) {
+			} else if(subcontent.type == types.menu) {
+				mongoose.model('Menu').findById(subcontent.data.menu).exec(function(err, res) {
 					if(err) {
 						cb(err);
 					} else if(!res) {
@@ -139,12 +139,22 @@ module.exports = function(config) {
 						};
 						cb(error);
 					} else {
-						// TODO: Render without res.render command!
-						var error = {
-							code: 5008,
-							message: 'Don\'t know how to render menu!',
-						};
-						cb(error);
+						var menu = res;
+						var context = {menu: menu, constants: constants};
+						app.render(settings.template + '/' + subcontent.data.template,
+							context, function(err, html) {
+								if(err) {
+									cb(err);
+								} else if(!html) {
+									var error = {
+										code: 5009,
+										message: 'express render failed without an error code!',
+									};
+									cb(error);
+								} else {
+									cb(null, html);
+								}
+							});
 					}
 				});
 			}

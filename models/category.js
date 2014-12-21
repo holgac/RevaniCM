@@ -97,7 +97,7 @@ module.exports = function(config) {
 		return ['setParent'];
 	};
 
-	CategorySchema.methods.setParent = function(request, user, settings, cb) {
+	CategorySchema.methods.setParent = function(request, user, settings, app, cb) {
 		var self = this;
 		if(!user) {
 			cb({
