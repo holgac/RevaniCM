@@ -28,14 +28,18 @@ div.container-fluid
 				img(ng-src='{{subcontent.data.image}}')
 		div.row.form-horizontal(ng-if='subcontent.type==3')
 			label.col-sm-1.control-label= t('admin.menu')
-			div.col-sm-11(ng-if='subcontent.data.menu != null')
-				| {{subcontent.data.menu | cachedDocument:'menu':'name'}}
-				a.btn.btn-success.btn-xs.pull-right(ng-click='selectMenu()')
-					span.glyphicon.glyphicon-pencil
-			div.col-sm-11(ng-if='subcontent.data.menu == null')
-				= t('admin.selectmenu')
-				a.btn.btn-success.btn-xs.pull-right(ng-click='selectMenu()')
-					span.glyphicon.glyphicon-pencil
+			div.col-sm-11
+				span.form-control(ng-if='subcontent.data.menu != null')
+					| {{subcontent.data.menu | cachedDocument:'menu':'name'}}
+					a.btn.btn-success.btn-xs.pull-right(ng-click='selectMenu()')
+						span.glyphicon.glyphicon-pencil
+				span.form-control(ng-if='subcontent.data.menu == null')
+					= t('admin.selectmenu')
+					a.btn.btn-success.btn-xs.pull-right(ng-click='selectMenu()')
+						span.glyphicon.glyphicon-pencil
+			label.col-sm-1.control-label= t('admin.template')
+			div.col-sm-11
+				input.form-control(type='text', ng-model='subcontent.data.template')
 		button.btn.btn-primary.pull-right(ng-click='save()', style='margin-top:1em')= t('admin.save')
 		a.btn.btn-warning.pull-right(href='#viewsubcontents', style='margin-top:1em; margin-right:1em')= t('goback')
 

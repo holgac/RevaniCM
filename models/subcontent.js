@@ -89,7 +89,7 @@ module.exports = function(config) {
 		return ['at'];
 	};
 
-	SubContentSchema.statics.at = function(request, user, cb) {
+	SubContentSchema.statics.at = function(request, user, settings, cb) {
 		var SubContent = mongoose.model('SubContent');
 		var position = request.params.customParam;
 		var positionPipeline = [
@@ -127,6 +127,26 @@ module.exports = function(config) {
 				var resultHtml = '<img src="' + result.data.image + '"/>';
 				cb(null, resultHtml);
 				return;
+			} else if(result.type == types.menu) {
+				mongoose.model('Menu').findById(result.data.menu).exec(function(err, res) {
+					if(err) {
+						cb(err);
+					} else if(!res) {
+						var error = {
+							code: 404,
+							message: 'Document Not Found',
+							additionalMessage: 'Document With _id ' + req.params.id + ' Not Found',
+						};
+						cb(error);
+					} else {
+						// TODO: Render without res.render command!
+						var error = {
+							code: 5008,
+							message: 'Don\'t know how to render menu!',
+						};
+						cb(error);
+					}
+				});
 			}
 		});
 	};

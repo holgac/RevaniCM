@@ -156,7 +156,7 @@ module.exports = function(config) {
 		return ['addComment'];
 	};
 
-	ArticleSchema.methods.addComment = function(request, user, cb) {
+	ArticleSchema.methods.addComment = function(request, user, settings, cb) {
 		var self = this;
 		var requestBody = request.body;
 

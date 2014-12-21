@@ -44,7 +44,7 @@ var admin = function(config, mongodbConnection, settings) {
 				version: config.version,
 				settings: settings
 			};
-			// temporarily hard coded, will be changed with the template system
+			// TODO: temporarily hard coded, will be changed with the template system
 			res.render('revshine/'+viewName, context);
 		}
 	}

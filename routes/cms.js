@@ -15,7 +15,7 @@ var cms = function(config, mongodbConnection, settings) {
 	};
 	self.createView = function(viewName) {
 		return function(req, res, settings) {
-			context = {
+			var context = {
 				version:config.version,
 				settings:settings,
 				user:req.user

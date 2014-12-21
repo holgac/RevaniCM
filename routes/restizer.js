@@ -395,9 +395,9 @@ var restizer = function(config, mongodbConnection, settings) {
 						} else if(res == null) {
 							var error = {
 								code: 404,
-								message: 'Article Not Found',
-								additionalMessage: 'Article With _id ' + req.params.id + ' Not Found',
-							}
+								message: 'Document Not Found',
+								additionalMessage: 'Document With _id ' + req.params.id + ' Not Found',
+							};
 							cb(error);
 						} else {
 							cb(err, res, settings)
@@ -482,7 +482,7 @@ var restizer = function(config, mongodbConnection, settings) {
 					}
 				});
 				customActions.push(function(settings, cb) {
-					Model[action](req, req.user, function(err, result) {
+					Model[action](req, req.user, settings, function(err, result) {
 						cb(err, result);
 					});
 				});
@@ -509,7 +509,7 @@ var restizer = function(config, mongodbConnection, settings) {
 					});
 				});
 				customActions.push(function(doc, settings, cb) {
-					doc[action](req, req.user, function(err, result) {
+					doc[action](req, req.user, settings, function(err, result) {
 						cb(err, result);
 					});
 				});
